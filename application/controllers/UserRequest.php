@@ -50,7 +50,10 @@ class UserRequest extends CI_Controller{
         $this->load->view('RequisitionForm', $data);
     }
 
- 
+    public function edit_request(){
+        
+    }
+
     public function submit_request(){
         $id = $this->request_model->get_user_id($this->session->userdata('username'));
         $transID = $this->session->userdata('requestID');
