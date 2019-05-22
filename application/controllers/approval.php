@@ -13,7 +13,8 @@ class Approval extends CI_Controller{
 
         $request = array(
             'status' => 'Waiting Budgeting',
-            'date_approved' => $current_date
+            'date_approved' => $current_date,
+            'approved_by' => $this->session->userdata('username')
         );
         
         $this->request_model->update_request($transID, $request);
@@ -26,7 +27,8 @@ class Approval extends CI_Controller{
 
         $request = array(
             'status' => 'Submitted PD',
-            'date_approved' => $current_date
+            'date_approved' => $current_date,
+            'approved_by' => $this->session->userdata('username')
         );
         
         $this->request_model->update_request($transID, $request);
@@ -39,7 +41,8 @@ class Approval extends CI_Controller{
 
         $request = array(
             'status' => 'Processing',
-            'date_approved' => $current_date
+            'date_approved' => $current_date,
+            'approved_by' => $this->request_model->get_user_id($this->session->userdata('username'))
         );
         
         $this->request_model->update_request($transID, $request);

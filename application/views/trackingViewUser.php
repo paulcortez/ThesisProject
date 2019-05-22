@@ -345,6 +345,9 @@
                   <h4>Status</h4>
                 </th>
                 <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Approved by</h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
                   <h4>Date Approved</h4>
                 </th>
               </tr>
@@ -472,6 +475,7 @@
       </td>
 
       <td><?php echo $request->status; ?></td>
+      <td><?php echo $request->approved_by ?></td>
       <td><?php echo $request->date_approved; ?></td>
       <td><input type="text" name="reqID" value=<?php echo $request->requestID; ?> hidden /></td>
       </tr>

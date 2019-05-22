@@ -52,6 +52,18 @@ class Request_model extends CI_Model{
         return $this->db->insert_id();
     }
 
+    public function update_item($itemID, $itemDetails){
+        $this->db->where('itemID', $itemID);
+        $this->db->update('item', $itemDetails);
+        return $this->db->affected_rows(); 
+    }
+
+    public function delete_item($itemID){
+        $this->db->where('itemID', $itemID);
+        $this->db->delete('item');
+        return $this->db->affected_rows(); 
+    }
+
     //after submitting
     public function update_request($requestID, $requestData){
         $this->db->where('requestID', $requestID);
@@ -71,7 +83,7 @@ class Request_model extends CI_Model{
     //------------------------------displaying-----------------------------------//
     //displaying records
         public function display_item(){
-        $this->db->select('itemName, itemDescription, unit, quantity, item.requestID');
+        $this->db->select('itemID, itemName, itemDescription, unit, quantity, item.requestID');
         $this->db->from('item_request');
         $this->db->join('item', 'item.requestID = item_request.requestID');
         $query = $this->db->get();
@@ -80,7 +92,7 @@ class Request_model extends CI_Model{
 
     //display request
     public function display_request($userID){
-        $this->db->select('item_request.requestID, username, date_requested, status, date_approved, users.userID');
+        $this->db->select('item_request.requestID, username, date_requested, status, approved_by, date_approved, users.userID');
         $this->db->from('item_request');
         $this->db->where('users.userID', $userID);
         $this->db->join('users', 'users.userID = item_request.userID');

@@ -50,8 +50,35 @@ class UserRequest extends CI_Controller{
         $this->load->view('RequisitionForm', $data);
     }
 
-    public function edit_request(){
-        
+    public function edit_item(){
+        $item = $this->input->post('item');
+        $description = $this->input->post('description');
+        $unit = $this->input->post('unit');
+        $quantity = $this->input->post('quantity');
+        $itemID = $this->input->post('itemID');
+        $reqID = $this->session->userdata('requestID');
+
+        $itemDetails = array(
+            'itemName' => $item,
+            'itemDescription' => $description,
+            'unit' => $unit,
+            'quantity' => $quantity
+        );
+
+        $this->request_model->update_item($itemID, $itemDetails);
+        $data['requestID'] = $this->request_model->get_request_id($reqID);
+        $data['item'] = $this->request_model->display_item();
+        $this->load->view('RequisitionForm', $data);
+    }
+
+    public function delete_item(){
+        $itemID = $this->input->post('itemID');
+        $reqID = $this->session->userdata('requestID');
+
+        $this->request_model->delete_item($itemID);
+        $data['requestID'] = $this->request_model->get_request_id($reqID);
+        $data['item'] = $this->request_model->display_item();
+        $this->load->view('RequisitionForm', $data);
     }
 
     public function submit_request(){
