@@ -82,7 +82,17 @@ class UserRequest extends CI_Controller{
     }
 
     public function edit_request(){
-        
+        $reqID = $this->input->post('requestID');
+        $this->session->set_userdata('requestID', $reqID);
+        $data['requestID'] = $reqID;
+        $data['item'] = $this->request_model->display_item();
+        $this->load->view('pendingItems', $data);
+    }
+
+    public function delete_request(){
+        $reqID = $this->input->post('requestID');
+        $this->request_model->delete_request($reqID);
+        redirect('UserRequest/display_request');
     }
 
     public function submit_request(){
@@ -123,8 +133,8 @@ class UserRequest extends CI_Controller{
 
     //Display
     public function display_request(){
-         $data['items'] = $this->request_model->displayItemRequestOpen($this->session->userdata('requestID'));
-         $this->load->view('RequisitionForm', $data);
+         $data['pendingRequest'] = $this->request_model->displayOpenRequest($this->request_model->get_user_id($this->session->userdata('username')));
+         $this->load->view('pending_req_view', $data);
     }
 
 

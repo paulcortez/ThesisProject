@@ -39,52 +39,6 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-  <!--Add Row-->
-  <meta charset="windows-1252">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <script>
-    function addRow() {
-      // get input values
-      var item = document.getElementById('item').value;
-      var description = document.getElementById('description').value;
-      var unit = document.getElementById('unit').value;
-      var quantity = document.getElementById('quantity').value;
-      // get the html table
-      // 0 = the first table
-      var table = document.getElementsByTagName('table')[0];
-      //adding checklist
-      var x = document.createElement("INPUT");
-      x.setAttribute("type", "checkbox");
-
-      // add new empty row to the table
-      // 0 = in the top 
-      // table.rows.length = the end
-      // table.rows.length/2+1 = the center
-      var newRow = table.insertRow(1);
-
-      // add cells to the row
-      var cel1 = newRow.insertCell(0);
-      var cel2 = newRow.insertCell(1);
-      var cel3 = newRow.insertCell(2);
-      var cel4 = newRow.insertCell(3);
-      var cel5 = newRow.insertCell(4); //delete button
-
-
-      // add values to the cells
-      cel1.innerHTML = item;
-      cel2.innerHTML = description;
-      cel3.innerHTML = unit;
-      cel4.innerHTML = quantity;
-
-    }
-  </script>
-  <!--Delete Row-->
-  <script>
-    function myDeleteFunction() {
-      document.getElementById("myTable").deleteRow(1);
-    }
-  </script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -92,7 +46,7 @@
 
     <header class="main-header">
       <!-- Logo -->
-      <a href="../user.html" class="logo">
+      <a href="Dean.html" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">CPU</span>
         <!-- logo for regular state and mobile devices -->
@@ -299,8 +253,8 @@
           <li class="active treeview">
 
             <ul class="treeview-menu">
-              <li><a href="RequisitionForm.html"><i class="fa fa-circle-o"></i> Create Request</a></li>
-              <li><a href="Requests.html"><i class="fa fa-circle-o"></i> Track Request</a></li>
+              <li><a href="<?php echo base_url() ?>index.php/page/ccs"><i class="fa fa-circle-o"></i>Create Request</a></li>
+              <li><a href="<?php echo base_url() ?>index.php/UserRequest/trackView"><i class="fa fa-circle-o"></i> Track Request</a></li>
               <li><a href="index2.html"><i class="fa fa-circle-o"></i> Activity Log</a></li>
             </ul>
           </li>
@@ -314,8 +268,8 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Dashboard
-          <small>Control panel</small>
+          <?php echo $this->session->userdata('username'); ?>
+          <small><?php echo $this->session->userdata('department') ?></small>
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -367,183 +321,57 @@
 
         <body>
 
-          <!--Date:-->
-          <div class="datestyle">
-            <h3 id="demo"></h3>
-            <h4>Date</h4>
-            <script>
-              var d = new Date();
-              document.getElementById("demo").innerHTML = d.toDateString();
-            </script>
-          </div>
-          <!--End of Date-->
 
-          <!--Start of Table -->
+          <!--Table 2-->
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Request ID</h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Date Requested</h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Status</h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4></h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4></h4>
+                </th>
+              </tr>
+            </thead>
 
-          <br><br>
-          <div class="box box-default">
-            <div class="box-header with-border">
-              <h2 class="box-title">Requisition Form</h2>
-            </div>
-            <div class="box-body">
+            <tbody>
+              <?php foreach($pendingRequest as $pending):?>
+              <tr>
+                  <td><?php echo $pending->requestID;?></td>
+                  <td><?php echo $pending->date_requested;?></td>
+                  <td><?php echo $pending->status;?></td>
+                  
+                <td>
+                 
+                  <?php echo form_open('UserRequest/edit_request')?> 
+                  <input type="text" name="requestID" value=<?php echo $pending->requestID; ?> hidden />
+                  <button type="submit" class="btn btn-primary pull-right">View</button>
+                  </form>
+               
+                </td>
+                <?php echo form_open('UserRequest/delete_request')?> 
+                <input type="text" name="requestID" value=<?php echo $pending->requestID; ?> hidden />
+                  <td><button type="submit" class="btn btn-success pull-right">Delete</button></td>
+                </form>
+              </tr>
+           <?php endforeach;?>
+            </tbody>
 
-              <?php echo form_open('UserRequest/new_request'); ?>
-              <div class="row">
-                <div class="col-lg-12">
-                  <h4>Transaction ID </h4>
-                  <input type="text" class="form-control" name="item" value="<?php echo $requestID; ?>" readonly>
-                </div>
-              </div>
-              </form>
-
-
-              <form name="addItem" method="post" action="<?php echo site_url('UserRequest/add_item') ?>">
-                <div class="row">
-                  <div class="col-lg-4 col-sm-8">
-                    <h4>Item </h4>
-                    <input type="text" class="form-control" placeholder="Item" name="item" id="item">
-                  </div>
-                  <div class="col-lg-4 col-sm-8">
-                    <h4>Description</h4>
-                    <input type="text" class="form-control" placeholder="Description" name="description" id="description">
-                  </div>
-
-                  <div class="col-lg-2 col-sm-4">
-                    <h4>Unit</h4>
-                    <input type="text" class="form-control" placeholder="Unit" name="unit" id="unit">
-                  </div>
-
-
-                  <div class="col-lg-2 col-sm-4">
-                    <h4>Quantity</h4>
-                    <input type="text" class="form-control" placeholder="Quantity" name="quantity" id="quantity">
-                  </div>
-                </div>
-
-            </div>
-
-            <div class="box-footer">
-              <button type="submit" class="btn btn-success pull-right">Add</button><br> <br><br><br>
-            </div>
-            </form>
-
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col" class="col-lg-4 col-sm-8">
-                    <h4>Item Name</h4>
-                  </th>
-                  <th scope="col" class="col-lg-4 col-sm-8">
-                    <h4>Description</h4>
-                  </th>
-                  <th scope="col" class="col-lg-4 col-sm-8">
-                    <h4>Unit</h4>
-                  </th>
-                  <th scope="col" class="col-lg-4 col-sm-8">
-                    <h4>Quantity</h4>
-                  </th>
-                  <th scope="col" class="col-lg-4 col-sm-8"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php foreach ($item as $items) :
-                  if ($items->requestID == $requestID) {
-                    ?>
-                    <tr>
-                      <td><?php echo $items->itemName; ?></td>
-                      <td><?php echo $items->itemDescription; ?></td>
-                      <td><?php echo $items->unit; ?></td>
-                      <td><?php echo $items->quantity; ?></td>
-                      <td>
-
-                        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal1<?php echo $items->itemID; ?>">
-                          Edit
-                        </button>
-
-                        <?php echo form_open('UserRequest/edit_item'); ?>
-                        <div class="modal fade" id="exampleModal1<?php echo $items->itemID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <link rel="stylesheet" type="text/css" href="comment.css">
-                                <div class="titleBox">
-                                  <label>Comment Section</label>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-lg-4 col-sm-8">
-                                    <h4>Item </h4>
-                                    <input type="text" class="form-control" placeholder="Item" name="item" id="item" value="<?php echo $items->itemName; ?>">
-                                  </div>
-                                  <div class="col-lg-4 col-sm-8">
-                                    <h4>Description</h4>
-                                    <input type="text" class="form-control" placeholder="Description" name="description" id="description" value="<?php echo $items->itemDescription; ?>">
-                                  </div>
-
-                                  <div class="col-lg-2 col-sm-4">
-                                    <h4>Unit</h4>
-                                    <input type="text" class="form-control" placeholder="Unit" name="unit" id="unit" value="<?php echo $items->unit; ?>">
-                                  </div>
-
-
-                                  <div class="col-lg-2 col-sm-4">
-                                    <h4>Quantity</h4>
-                                    <input type="text" class="form-control" placeholder="Quantity" name="quantity" id="quantity" value="<?php echo $items->quantity; ?>">
-                                  </div>
-                                </div>
-
-                                <input type="text" name="itemID" value=<?php echo $items->itemID; ?> hidden />
-                                <div class="box-footer">
-                                  <button type="submit" class="btn btn-success pull-right">Edit</button><br> <br><br><br>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        </form>
-
-
-                      </td>
-
-
-                      <td>
-                        <?php echo form_open('UserRequest/delete_item'); ?>
-                        <input type="text" name="itemID" value=<?php echo $items->itemID; ?> hidden />
-                        <button type="submit" class="btn btn-success pull-right">Delete</button><br> <br><br><br>
-                      </td>
-                      
-              </div>
-        </div>
-      </div>
-      </div>
-      </form>
-
-
-      </td>
-      </tr>
-    <?php }
-endforeach; ?>
-  </tbody>
   </div>
   </div>
   </table>
   </div>
-
-  <!--Table 2-->
-  <form name="submitRequest" method="post" action="<?php echo site_url('UserRequest/submit_request') ?>">
-    <div class="box-footer">
-      <button type="submit" class="btn btn-primary pull-right">Submit Request</button>
-  </form>
-  </div>
-  </div>
-  <!-- /.box-body -->
-  </div>
-
+  
 
   </section>
   <!-- /.content -->
@@ -748,7 +576,7 @@ endforeach; ?>
   </aside>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
+             immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
   </div>
   <!-- ./wrapper -->
@@ -791,5 +619,4 @@ endforeach; ?>
   <!-- AdminLTE for demo purposes -->
   <script src="<?php echo base_url('assets/js/demo.js'); ?>"></script>
 </body>
-
 </html>

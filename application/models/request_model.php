@@ -71,6 +71,12 @@ class Request_model extends CI_Model{
         return $this->db->affected_rows();
     }
 
+    public function delete_request($requestID){
+        $this->db->where('requestID', $requestID);
+        $this->db->delete('item_request');
+        return $this->db->affected_rows();
+    }
+
 
     //------------------------------Comment-------------------------------------//
     public function itemComment($comment){
@@ -101,11 +107,12 @@ class Request_model extends CI_Model{
     }
 
     //display during user adding items
-    public function displayOpenRequest($requestID){
-        $this->db->select('itemName, itemDescription, unit, quantity, status, item.requestID, status');
+    public function displayOpenRequest($userID){
+        $this->db->select('item_request.requestID, status, date_requested, users.userID');
         $this->db->from('item_request');
-        $this->db->where('item.requestID', $requestID);
-        $this->db->join('item', 'item.requestID = item_request.requestID');
+        $this->db->where('status', "Pending Submission");
+        $this->db->where('item_request.userID', $userID);
+        $this->db->join('users', 'users.userID = item_request.userID');
         $query = $this->db->get();
         return $query->result();
     }
