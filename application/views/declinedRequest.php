@@ -253,10 +253,8 @@
           <li class="active treeview">
 
             <ul class="treeview-menu">
-              <li class="active"><a href=#><i class="fa fa-circle-o"></i> Requests Information</a></li>
-              <li><a href="<?php echo base_url()?>index.php/approval/displayRequest"><i class="fa fa-circle-o"></i> Approval</a></li>
-              <li><a href="<?php echo base_url()?>index.php/UserRequest/new_request"><i class="fa fa-circle-o"></i>Create Request</a></li>
-              <li><a href="<?php echo base_url()?>index.php/UserRequest/trackView"><i class="fa fa-circle-o"></i> Track Request</a></li>
+              <li><a href="<?php echo base_url() ?>index.php/page/ccs"><i class="fa fa-circle-o"></i>Create Request</a></li>
+              <li><a href="<?php echo base_url() ?>index.php/UserRequest/trackView"><i class="fa fa-circle-o"></i> Track Request</a></li>
               <li><a href="index2.html"><i class="fa fa-circle-o"></i> Activity Log</a></li>
             </ul>
           </li>
@@ -277,7 +275,6 @@
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
           <li class="active">Dashboard</li>
         </ol>
-      </section>
       </section>
 
       <!-- Main content -->
@@ -326,7 +323,6 @@
 
 
           <!--Table 2-->
-
           <table class="table">
             <thead>
               <tr>
@@ -339,186 +335,159 @@
                 <th scope="col" class="col-lg-4 col-sm-8">
                   <h4>Requested By</h4>
                 </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4></h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4></h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Status</h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Approved by</h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Date Approved</h4>
+                </th>
               </tr>
             </thead>
+
             <tbody>
+              <?php foreach ($declinedRequest as $request) : ?>
+                  <tr>
+                    <td><?php echo $request->requestID; ?></td>
+                    <td><?php echo $request->date_requested; ?></td>
+                    <td><?php echo $request->username; ?></td>
+                    <td>
 
-              <?php foreach ($query as $request) : ?>
-                <tr>
-                  <td><?php echo $request->requestID; ?></td>
-                  <td><?php echo $request->date_requested; ?></td>
-                  <td><?php echo $request->username; ?></td>
-                  <td>
+                      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal1<?php echo $request->requestID; ?>">
+                        Comment
+                      </button>
 
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal1<?php echo $request->requestID; ?>">
-                      Comment
-                    </button>
-
-                    <!-- Modal -->
-                    <?php echo form_open('comment/userComment'); ?>
-
-                    <div class="modal fade" id="exampleModal1<?php echo $request->requestID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <link rel="stylesheet" type="text/css" href="comment.css">
-                            <div class="titleBox">
-                              <label>Comment Section</label>
+                      <!-- Modal -->
+                      <?php echo form_open('comment/userComment'); ?>
+                      <div class="modal fade" id="exampleModal1<?php echo $request->requestID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
                             </div>
+                            <div class="modal-body">
+                              <link rel="stylesheet" type="text/css" href="comment.css">
+                              <div class="titleBox">
+                                <label>Comment Section</label>
+                              </div>
 
-                            <div class="actionBox">
-                              <?php foreach ($comment as $comments) :
-                                if ($comments->requestID == $request->requestID) {
-                                  ?>
-                                  <ul class="commentList">
-                                    <div class="commentText">
-                                      <p><b><?php echo $comments->username; ?></b> <?php echo $comments->comment; ?></p> <span class="date sub-text"><?php echo $comments->date?></span>
-                                    </div>
-                                  </ul>
-                                <?php }
-                            endforeach; ?>
-                            </div>
-
-                            <input type="text" name="requestID" value=<?php echo $request->requestID; ?> hidden />
-
-
-                            <div class="form-group">
-                              <input class="form-control" name="comment" type="text" placeholder="Your comments" />
-                            </div>
-                            <div class="form-group">
-                              <button class="btn btn-default">Add</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    </form>
-                  </td>
-
-
-                  <td>
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal<?php echo $request->requestID; ?>">
-                      View Details
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal<?php echo $request->requestID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Items</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-
-                          <div class="modal-body">
-                            <table class="table" id="myTable">
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="col-lg-2 col-sm-8">
-                                    <h4>Item name</h4>
-                                  </th>
-                                  <th scope="col" class="col-lg-5 col-sm-8">
-                                    <h4>Description</h4>
-                                  </th>
-                                  <th scope="col" class="col-lg-2 col-sm-4">
-                                    <h4>Unit</h4>
-                                  </th>
-                                  <th scope="col" class="col-lg-2 col-sm-4">
-                                    <h4>Quantity</h4>
-                                  </th>
-                                  <th scope="col" class="col-lg-2 col-sm-4">
-                                    <h4>Request ID</h4>
-                                  </th>
-                                </tr>
-                              </thead>
-
-                              <tbody>
-                                <?php foreach ($item as $items) :
-                                  if ($items->requestID == $request->requestID) {
+                              <div class="actionBox">
+                                <?php foreach ($comment as $comments) :
+                                  if ($comments->requestID == $request->requestID) {
                                     ?>
-                                    <tr>
-                                      <td><?php echo $items->itemName; ?></td>
-                                      <td><?php echo $items->itemDescription; ?></td>
-                                      <td><?php echo $items->unit; ?></td>
-                                      <td><?php echo $items->quantity; ?></td>
-                                      <td><?php echo $items->requestID; ?></td>
-                                    </tr>
+                                    <ul class="commentList">
+                                      <div class="commentText">
+                                        <p><b><?php echo $comments->username; ?></b> <?php echo $comments->comment; ?></p><span class="date sub-text"><?php echo $comments->date ?></span>
+                                      </div>
+                                    </ul>
                                   <?php }
                               endforeach; ?>
-                              </tbody>
+                              </div>
 
-                          </div>
-            </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-      </div>
-    </div>
-    </div>
-    </div>
-    </td>
+                              <input type="text" name="requestID" value=<?php echo $request->requestID; ?> hidden />
 
-    <td>
-      <?php echo form_open('approval/approveRequest'); ?>
-      <button type="submit" class="btn btn-success">Approve</button>
-      <input type="text" name="reqID" value=<?php echo $request->requestID; ?> hidden /></form>
-    </td>
-    <td>
 
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2<?php echo $request->requestID; ?>">Decline</button>
-
-                    <div class="modal fade" id="exampleModal2<?php echo $request->requestID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <link rel="stylesheet" type="text/css" href="comment.css">
-                            <div class="titleBox">
-                              <label>Comment Section</label>
+                              <div class="form-group">
+                                <input class="form-control" name="comment" type="text" placeholder="Your comments" />
+                              </div>
+                              <div class="form-group">
+                                <button class="btn btn-default">Add</button>
+                              </div>
                             </div>
-
-                      
-
-                            <?php echo form_open("approval/declineRequest");?>      
-                            <input type="text" name="requestID" value=<?php echo $request->requestID; ?> hidden />
-                            <div class="form-group">
-                              <input class="form-control" name="comment" type="text" placeholder="Your comments" />
-                            </div>
-                            
-                            <div class="form-group">
-                              <button type="submit" class="btn btn-default">Submit</button>
-                            </div>
-                            </form>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    
-
-      <input type="text" name="reqID" value=<?php echo $request->requestID; ?> hidden /></form>
-    </td>
-    </tr>
+                      </form>
+                    </td>
 
 
-  <?php endforeach; ?>
+
+                    <td>
+                      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal<?php echo $request->requestID; ?>">
+                        View Details
+                      </button>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="exampleModal<?php echo $request->requestID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Items</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <div class="modal-body">
+                              <table class="table" id="myTable">
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="col-lg-2 col-sm-8">
+                                      <h4>Item name</h4>
+                                    </th>
+                                    <th scope="col" class="col-lg-5 col-sm-8">
+                                      <h4>Description</h4>
+                                    </th>
+                                    <th scope="col" class="col-lg-2 col-sm-4">
+                                      <h4>Unit</h4>
+                                    </th>
+                                    <th scope="col" class="col-lg-2 col-sm-4">
+                                      <h4>Quantity</h4>
+                                    </th>
+
+                                  </tr>
+                                </thead>
+
+                                <tbody>
+                                  <?php foreach ($item as $items) :
+                                    if ($items->requestID == $request->requestID) {
+                                      ?>
+                                      <tr>
+                                        <td><?php echo $items->itemName; ?></td>
+                                        <td><?php echo $items->itemDescription; ?></td>
+                                        <td><?php echo $items->unit; ?></td>
+                                        <td><?php echo $items->quantity; ?></td>
+                                      </tr>
+                                    <?php }
+                                endforeach; ?>
+                                </tbody>
+
+                            </div>
+              </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+      </div>
+      </div>
+
+      </td>
+
+      <td><?php echo $request->status; ?></td>
+      <td><?php echo $request->approved_by ?></td>
+      <td><?php echo $request->date_approved; ?></td>
+      <td><input type="text" name="reqID" value=<?php echo $request->requestID; ?> hidden /></td>
+      </tr>
+    <?php 
+endforeach; ?>
   </tbody>
 
   </div>
   </div>
   </table>
   </div>
-
+  
 
   </section>
   <!-- /.content -->

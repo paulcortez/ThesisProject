@@ -471,13 +471,28 @@
       </div>
       </div>
       </div>
-
       </td>
 
       <td><?php echo $request->status; ?></td>
       <td><?php echo $request->approved_by ?></td>
       <td><?php echo $request->date_approved; ?></td>
+    
+      <td> 
+      <?php echo form_open('UserRequest/edit_request'); ?> 
+      <input type="text" name="requestID" value=<?php echo $request->requestID; ?> hidden />
+      <button type="submit" class="btn btn-primary" <?php if ($request->status != 'Decline' && $request->status != 'Pending Submission'){ ?> disabled <?php   } ?> >Edit</button>
+      </form>
+      </td>
+
+      <td>  
+      <?php echo form_open('UserRequest/delete_request'); ?>
+      <input type="text" name="requestID" value=<?php echo $request->requestID; ?> hidden />
+      <button type="submit" class="btn btn-success" <?php if ($request->status != 'Decline' && $request->status != 'Pending Submission'){ ?> disabled <?php   } ?> >Delete</button>
+      </form>
+      </td>
+
       <td><input type="text" name="reqID" value=<?php echo $request->requestID; ?> hidden /></td>
+     
       </tr>
     <?php 
 endforeach; ?>

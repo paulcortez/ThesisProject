@@ -9,9 +9,9 @@ class UserRequest extends CI_Controller{
         $this->load->helper('date');
     }
 
-     //!--------------------------Request Operations--------------------------------
+   
 
-
+//---------------------------------Item 
     public function new_request(){
         $newRequest = array(
             $user = $this->request_model->get_user_id($this->session->userdata('username'))); 
@@ -80,6 +80,9 @@ class UserRequest extends CI_Controller{
         $data['item'] = $this->request_model->display_item();
         $this->load->view('RequisitionForm', $data);
     }
+    
+
+    //-------------------------------Request
 
     public function edit_request(){
         $reqID = $this->input->post('requestID');
@@ -92,7 +95,7 @@ class UserRequest extends CI_Controller{
     public function delete_request(){
         $reqID = $this->input->post('requestID');
         $this->request_model->delete_request($reqID);
-        redirect('UserRequest/display_request');
+        redirect('UserRequest/trackView');
     }
 
     public function submit_request(){
@@ -143,6 +146,13 @@ class UserRequest extends CI_Controller{
         $data['item'] = $this->request_model->display_item(); 
         $data['comment'] = $this->request_model->displayComment();
         $this->load->view('trackingViewUser', $data);
+    }
+
+    public function declinedRequest(){
+        $data['declinedRequest'] = $this->request_model->declinedRequest($this->request_model->get_user_id($this->session->userdata('username')));
+        $data['item'] = $this->request_model->display_item(); 
+        $data['comment'] = $this->request_model->displayComment();
+        $this->load->view('declinedRequest', $data);
     }
 
 }

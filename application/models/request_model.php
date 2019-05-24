@@ -153,6 +153,16 @@ class Request_model extends CI_Model{
         return $query->result();
     }
 
+    public function declinedRequest($userID){
+        $this->db->select('item_request.requestID, username, date_requested, status, approved_by, date_approved, users.userID');
+        $this->db->from('item_request');
+        $this->db->where('users.userID', $userID);
+        $this->db->where('status', 'Declined');
+        $this->db->join('users', 'users.userID = item_request.userID');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function displayComment(){
         $this->db->select('comment, username, requestID, date');
         $this->db->from('comment');
