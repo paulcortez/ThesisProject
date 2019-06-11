@@ -38,7 +38,7 @@ class forTest extends CI_Controller
         if(isset($_POST['supplier'])){
         $supplierAddress = $this->request_model->get_supplier_address($name);
         echo $supplierAddress;
-        echo 'test';
+        
         }
  
     }

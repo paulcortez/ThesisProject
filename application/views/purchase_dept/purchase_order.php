@@ -287,15 +287,33 @@
                     <li class="active treeview">
 
                         <ul class="treeview-menu">
-                            <li class="active"><a href="RF1.html"><i class="fa fa-circle-o"></i> Create Request</a></li>
-                            <li><a href="Requests.html"><i class="fa fa-circle-o"></i> Request Information</a></li>
-                            <li><a href="Track.html"><i class="fa fa-circle-o"></i> Track Request</a></li>
-                            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Activity Log</a></li>
+                            <li><a href=""><i class="fa fa-circle-o"></i> Dashboard</a></li>
+                            <li class="active"><a href="RF1.html"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Request</a>
+                                <div class="dropdown-menu">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">New Request</a></li>
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">Requst List</a></li>
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Supplier</a>
+                                <div class="dropdown-menu">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">Supplier List</a></li>
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">New Supplier</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a href=""><i class="fa fa-circle-o"></i> Approval</a></li>
+                            <li><a href=""><i class="fa fa-circle-o"></i> Transaction History</a></li>
+                            <li><a href=""><i class="fa fa-circle-o"></i> Reports</a></li>
                         </ul>
                     </li>
                 </ul>
-
-                <!-- /.sidebar -->
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
