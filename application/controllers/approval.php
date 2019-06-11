@@ -85,7 +85,7 @@ class Approval extends CI_Controller
         $data['query'] = $this->request_model->displayUnitHead();
         $data['item'] = $this->request_model->display_item();
         $data['comment'] = $this->request_model->displayComment();
-        $this->load->view('dean_view', $data);
+        $this->load->view('dept_views/dean_view', $data);
     }
 
     public function displayRequestBudgeting()
@@ -93,7 +93,7 @@ class Approval extends CI_Controller
         $data['requests'] = $this->request_model->displayBudgeting();
         $data['requestItems'] = $this->request_model->display_item();
         $data['comment'] = $this->request_model->displayComment();
-        $this->load->view('budgeting_view', $data);
+        $this->load->view('dept_views/budgeting_view', $data);
     }
 
     public function displayRequestPurchasing()
@@ -101,6 +101,6 @@ class Approval extends CI_Controller
         $data['requests'] = $this->request_model->displayPurchasing();
         $data['requestItems'] = $this->request_model->display_item();
         $data['comment'] = $this->request_model->displayComment();
-        $this->load->view('purchasing_view', $data);
+        $this->load->view('dept_views/purchasing_view', $data);
     }
 }

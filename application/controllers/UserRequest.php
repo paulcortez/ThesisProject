@@ -26,7 +26,7 @@ class UserRequest extends CI_Controller{
         $this->session->set_userdata('requestID', $add);
         $data['requestID'] = $this->request_model->get_request_id($add);
 
-        $this->load->view('AddItemView', $data);
+        $this->load->view('user/AddItemView', $data);
     }
 
     public function add_item(){
@@ -47,7 +47,7 @@ class UserRequest extends CI_Controller{
         $this->request_model->insert_item($item);
         $data['requestID'] = $this->request_model->get_request_id($reqID);
         $data['item'] = $this->request_model->display_item();
-        $this->load->view('RequisitionForm', $data);
+        $this->load->view('user/RequisitionForm', $data);
     }
 
     public function edit_item(){
@@ -68,7 +68,7 @@ class UserRequest extends CI_Controller{
         $this->request_model->update_item($itemID, $itemDetails);
         $data['requestID'] = $this->request_model->get_request_id($reqID);
         $data['item'] = $this->request_model->display_item();
-        $this->load->view('RequisitionForm', $data);
+        $this->load->view('user/RequisitionForm', $data);
     }
 
     public function delete_item(){
@@ -78,7 +78,7 @@ class UserRequest extends CI_Controller{
         $this->request_model->delete_item($itemID);
         $data['requestID'] = $this->request_model->get_request_id($reqID);
         $data['item'] = $this->request_model->display_item();
-        $this->load->view('RequisitionForm', $data);
+        $this->load->view('user/RequisitionForm', $data);
     }
     
 
@@ -89,7 +89,7 @@ class UserRequest extends CI_Controller{
         $this->session->set_userdata('requestID', $reqID);
         $data['requestID'] = $reqID;
         $data['item'] = $this->request_model->display_item();
-        $this->load->view('pendingItems', $data);
+        $this->load->view('user/pendingItems', $data);
     }
 
     public function delete_request(){
@@ -137,7 +137,7 @@ class UserRequest extends CI_Controller{
     //Display
     public function display_request(){
          $data['pendingRequest'] = $this->request_model->displayOpenRequest($this->request_model->get_user_id($this->session->userdata('username')));
-         $this->load->view('pending_req_view', $data);
+         $this->load->view('user/pending_req_view', $data);
     }
 
 
@@ -145,14 +145,14 @@ class UserRequest extends CI_Controller{
         $data['pendingItems'] = $this->request_model->display_request($this->request_model->get_user_id($this->session->userdata('username')));
         $data['item'] = $this->request_model->display_item(); 
         $data['comment'] = $this->request_model->displayComment();
-        $this->load->view('trackingViewUser', $data);
+        $this->load->view('user/trackingViewUser', $data);
     }
 
     public function declinedRequest(){
         $data['declinedRequest'] = $this->request_model->declinedRequest($this->request_model->get_user_id($this->session->userdata('username')));
         $data['item'] = $this->request_model->display_item(); 
         $data['comment'] = $this->request_model->displayComment();
-        $this->load->view('declinedRequest', $data);
+        $this->load->view('user/declinedRequest', $data);
     }
 
 }

@@ -40,6 +40,29 @@ class Request_model extends CI_Model{
         }
     }
 
+    //supplier id
+    public function get_supplier_id($name){
+        $this->db->select('supplierID')->from('supplier')->where('supplierName', $name);
+        $query = $this->db->get();
+
+        if($query->num_rows() == 1 ){
+            $row = $query->row(0);
+
+            return $row->supplierID;
+        }
+    }
+
+    public function get_supplier_address($name){
+        $this->db->select('supplierAddress')->from('supplier')->where('supplierName', $name);
+        $query = $this->db->get();
+
+        if($query->num_rows() == 1 ){
+            $row = $query->row(0);
+
+            return $row->supplierAddress;
+        }
+    }
+
     //====================Request manipulation============================//
     public function addRequest($request){
         $this->db->insert('item_request', $request);
@@ -75,6 +98,13 @@ class Request_model extends CI_Model{
         $this->db->where('requestID', $requestID);
         $this->db->delete('item_request');
         return $this->db->affected_rows();
+    }
+
+
+    //-------------------Purchase Order----------------------------//
+    public function purchaseOrder($purchaseOrder){
+        $this->db->insert('purchase_order', $purchaseOrder);
+        return $this->db->insert_id();
     }
 
 
@@ -167,6 +197,22 @@ class Request_model extends CI_Model{
         $this->db->select('comment, username, requestID, date');
         $this->db->from('comment');
         $this->db->join('users', 'users.userID = comment.userID');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    //For Printing
+    public function displayRequest($requestID){
+        $this->db->select('itemID, itemName, itemDescription, unit, quantity, item.requestID');
+        $this->db->from('item');
+        $this->db->where('item.requestID' , $requestID);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function displaySupplier( ){
+        $this->db->select('supplierID, supplierName, supplierAddress, phone_no');
+        $this->db->from('supplier'); 
         $query = $this->db->get();
         return $query->result();
     }
