@@ -469,7 +469,7 @@
     </div>
     </td>
 
-    <?php echo form_open('forTest/createPurchaseOrder') ?>
+    <?php echo form_open('forTest') ?>
     <td><button type="submit" class="btn btn-success">Process PO</button></td>
     <td><input type="text" name="reqID" value=<?php echo $request->requestID; ?> hidden /></td>
     </form>

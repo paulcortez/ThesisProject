@@ -45,29 +45,21 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
     <script type="text/javascript">
-        //Address
-        $(document).ready(function() {
-            $('#supplier').change(function() {
-                $.post('forTest/test_one', {
-                    supplier: $(this).val()
-                }, function(data) {
-                    $('#address').val(data);
-                });
+      
+      $(document).ready(function() {
+      
+      
+        $('#supplier').change(function() {
+            $.post('forTest/createPurchaseOrder', {
+                supplier: $(this).val()
+            }, function(data) {
+                $('#address').val(data);
+                $('#contact').val(data);
             });
         });
-
-        //Contact
-        $(document).ready(function() {
-            $('#supplier').change(function() {
-                $.post('forTest/test_two', {
-                    supplier: $(this).val()
-                }, function(data) {
-                    $('#contact').val(data);
-                });
-            });
         });
 
-        /*
+         /*
                 $('#supplier').change(function(){
                     var address = $('#supplier').val();
                     $.post('forTest/createPurchaseOrder', {supplier:address}, function(data){
@@ -75,6 +67,7 @@
                     }); 
                 });
         });*/
+        
     </script>
 </head>
 
@@ -295,12 +288,12 @@
 
                         <ul class="treeview-menu">
                             <li><a href=""><i class="fa fa-circle-o"></i> Dashboard</a></li>
-                            <li class="active"><a href="<?php echo base_url() ?>index.php/forTest"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
+                            <li class="active"><a href="RF1.html"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Request</a>
                                 <div class="dropdown-menu">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="<?php echo base_url() ?>index.php/UserRequest" class="dropdown-item">New Request</a></li>
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">New Request</a></li>
                                         <li class="list-group-item"><a href="<?php echo base_url() ?>index.php/approval/displayRequestPurchasing" class="dropdown-item">Requst List</a></li>
                                         <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
                                     </ul>
@@ -346,137 +339,10 @@
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
                 <script src="test.js" type="text/javascript"></script>
 
+ 
 
 
-                <form action="home.html">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h1 class="box-title">Purchase Order Form</h1>
-
-
-                            <!--Date:-->
-                            <!--<h5 id="demo" class="pull-right"></h5><br><br>
-<p class="pull-right">Date</p>
-<script>
-var d = new Date();
-document.getElementById("demo").innerHTML = d.toDateString();
-</script>
-</div>
--->
-                            <!--End of Date-->
-
-
-                            <!--Start of Table -->
-                            <?php echo form_open('forTest/createPurchaseOrder') ?>
-                            <br><br>
-                            <div class="box-body">
-                                <div class="row">
-
-                                    <div class="col-lg-6">
-                                        <h4>Supplier: </h4>
-                                        <select class="form-control" name="supplier" id="supplier">
-                                            <option selected="disabled">Select Supplier</option>
-                                            <?php foreach ($suppliers as $supplier) : ?>
-                                                <option value="<?php echo $supplier->supplierName; ?>"><?php echo $supplier->supplierName; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <h4>P.O.Number</h4>
-                                        <input type="text" value="<?php echo $id;?>" class="form-control" placeholder="Purchase Order Number" readonly>
-                                    </div>
-
-
-                                    <div class="col-lg-12">
-                                        <h4>Address</h4>
-                                        <input type="text" name="address" id="address" class="form-control" placeholder="Address">
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <h4>Tel. #, Fax #:</h4>
-                                        <input type="text" name="contact" id="contact" class="form-control" placeholder="Tel. #, Fax #">
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <h4>Credit Terms: </h4>
-                                        <input type="text" name="credit" class="form-control" placeholder="Credit Terms">
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <h4>Order Date: </h4>
-                                        <div class="form-group">
-                                            <div class='input-group date' id='datepicker'>
-                                                <input type='text' name="date" class="form-control" />
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <script>
-                                            $(function() {
-                                                $('#datepicker').datepicker();
-                                            });
-                                        </script>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!--Table Details-->
-
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <h4>Item</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Description</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Unit</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Quantity</h4>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($item as $items) :
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $items->itemName; ?></td>
-                                            <td><?php echo $items->itemDescription; ?></td>
-                                            <td><?php echo $items->unit; ?></td>
-                                            <td><?php echo $items->quantity; ?></td>
-                                        </tr>
-                                    <?php
-                                endforeach; ?>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <!--End of Container-->
-                </form>
-
-                <!--Printing button-->
-                <div class="box-footer">
-                    <button class="btn btn-primary hidden-print" onclick="myFunction()"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
-                    <!--JS for Printing-->
-                    <script>
-                        function myFunction() {
-                            window.print();
-                        }
-                    </script>
-                </div>
-            </section>
-            <!-- /.content -->
-        </div>
-
-    </div>
-
+          
     <!-- /.content-wrapper -->
     <footer class="main-footer">
         <div class="pull-right hidden-xs">

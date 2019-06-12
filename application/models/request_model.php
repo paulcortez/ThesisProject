@@ -40,7 +40,7 @@ class Request_model extends CI_Model{
         }
     }
 
-    //supplier id
+    //supplier  
     public function get_supplier_id($name){
         $this->db->select('supplierID')->from('supplier')->where('supplierName', $name);
         $query = $this->db->get();
@@ -62,6 +62,28 @@ class Request_model extends CI_Model{
             return $row->supplierAddress;
         }
     }
+
+    public function get_supplier_contact($name){
+        $this->db->select('phone_no')->from('supplier')->where('supplierName', $name);
+        $query = $this->db->get();
+
+        if($query->num_rows() == 1 ){
+            $row = $query->row(0);
+
+            return $row->phone_no;
+        }
+    }
+
+    //purchase order
+    public function purchaseOrderNum($po_num){
+        
+    }
+
+    public function newPurchaseOrder($purchase_order){
+        $this->db->insert('purchase_order', $purchase_order);
+        return $this->db->insert_id();
+    }
+
 
     //====================Request manipulation============================//
     public function addRequest($request){

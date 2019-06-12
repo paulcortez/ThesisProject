@@ -9,7 +9,9 @@ class UserRequest extends CI_Controller{
         $this->load->helper('date');
     }
 
-   
+   public function index(){
+       $this->load->view('user/requestView');
+   }
 
 //---------------------------------Item 
     public function new_request(){
