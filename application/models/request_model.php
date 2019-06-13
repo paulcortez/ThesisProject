@@ -74,14 +74,10 @@ class Request_model extends CI_Model{
         }
     }
 
-    //purchase order
-    public function purchaseOrderNum($po_num){
-        
-    }
-
-    public function newPurchaseOrder($purchase_order){
-        $this->db->insert('purchase_order', $purchase_order);
-        return $this->db->insert_id();
+    //-------------------Purchase Order----------------------------// 
+    
+    public function purchaseOrder($purchaseOrder){
+        $this->db->insert('purchase_order', $purchaseOrder);
     }
 
 
@@ -120,13 +116,6 @@ class Request_model extends CI_Model{
         $this->db->where('requestID', $requestID);
         $this->db->delete('item_request');
         return $this->db->affected_rows();
-    }
-
-
-    //-------------------Purchase Order----------------------------//
-    public function purchaseOrder($purchaseOrder){
-        $this->db->insert('purchase_order', $purchaseOrder);
-        return $this->db->insert_id();
     }
 
 

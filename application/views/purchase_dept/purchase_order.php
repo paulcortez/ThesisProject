@@ -67,6 +67,11 @@
             });
         });
 
+        //date
+        $(function() {
+            $('#datepicker').datepicker();
+        });
+
         /*
                 $('#supplier').change(function(){
                     var address = $('#supplier').val();
@@ -348,14 +353,14 @@
 
 
 
-                <form action="home.html">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h1 class="box-title">Purchase Order Form</h1>
+
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h1 class="box-title">Purchase Order Form</h1>
 
 
-                            <!--Date:-->
-                            <!--<h5 id="demo" class="pull-right"></h5><br><br>
+                        <!--Date:-->
+                        <!--<h5 id="demo" class="pull-right"></h5><br><br>
 <p class="pull-right">Date</p>
 <script>
 var d = new Date();
@@ -363,16 +368,16 @@ document.getElementById("demo").innerHTML = d.toDateString();
 </script>
 </div>
 -->
-                            <!--End of Date-->
+                        <!--End of Date-->
 
 
-                            <!--Start of Table -->
-                            <?php echo form_open('forTest/createPurchaseOrder') ?>
-                            <br><br>
-                            <div class="box-body">
-                                <div class="row">
-
-                                    <div class="col-lg-6">
+                        <!--Start of Table -->
+                        <?php echo form_open('forTest/createPurchaseOrder'); ?>
+                        <br><br>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form name="print" method="post" action="<?php echo site_url('forTest/createPurchaseOrder') ?>">
                                         <h4>Supplier: </h4>
                                         <select class="form-control" name="supplier" id="supplier">
                                             <option selected="disabled">Select Supplier</option>
@@ -380,100 +385,103 @@ document.getElementById("demo").innerHTML = d.toDateString();
                                                 <option value="<?php echo $supplier->supplierName; ?>"><?php echo $supplier->supplierName; ?></option>
                                             <?php endforeach; ?>
                                         </select>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <h4>P.O.Number</h4>
-                                        <input type="text" value="<?php echo $id;?>" class="form-control" placeholder="Purchase Order Number" readonly>
-                                    </div>
-
-
-                                    <div class="col-lg-12">
-                                        <h4>Address</h4>
-                                        <input type="text" name="address" id="address" class="form-control" placeholder="Address">
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <h4>Tel. #, Fax #:</h4>
-                                        <input type="text" name="contact" id="contact" class="form-control" placeholder="Tel. #, Fax #">
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <h4>Credit Terms: </h4>
-                                        <input type="text" name="credit" class="form-control" placeholder="Credit Terms">
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <h4>Order Date: </h4>
-                                        <div class="form-group">
-                                            <div class='input-group date' id='datepicker'>
-                                                <input type='text' name="date" class="form-control" />
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <script>
-                                            $(function() {
-                                                $('#datepicker').datepicker();
-                                            });
-                                        </script>
-                                    </div>
-
                                 </div>
+
+                                <div class="col-lg-6">
+                                    <h4>P.O.Number</h4>
+                                    <input type="text" name="po_number" value="<?php echo $id; ?>" class="form-control" placeholder="Purchase Order Number" readonly>
+                                </div>
+
+
+                                <div class="col-lg-12">
+                                    <h4>Address</h4>
+                                    <input type="text" name="address" id="address" class="form-control" placeholder="Address">
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <h4>Tel. #, Fax #:</h4>
+                                    <input type="text" name="contact" id="contact" class="form-control" placeholder="Tel. #, Fax #">
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <h4>Credit Terms: </h4>
+                                    <input type="text" name="credit" class="form-control" placeholder="Credit Terms">
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <h4>Order Date: </h4>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='datepicker'>
+                                            <input type='date' name="date" class="form-control" value=""/>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-
-                            <!--Table Details-->
-
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <h4>Item</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Description</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Unit</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Quantity</h4>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($item as $items) :
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $items->itemName; ?></td>
-                                            <td><?php echo $items->itemDescription; ?></td>
-                                            <td><?php echo $items->unit; ?></td>
-                                            <td><?php echo $items->quantity; ?></td>
-                                        </tr>
-                                    <?php
-                                endforeach; ?>
-                                    </tr>
-                                </tbody>
-                            </table>
-
                         </div>
-                        <!--End of Container-->
-                </form>
 
-                <!--Printing button-->
-                <div class="box-footer">
-                    <button class="btn btn-primary hidden-print" onclick="myFunction()"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
-                    <!--JS for Printing-->
-                    <script>
-                        function myFunction() {
-                            window.print();
-                        }
-                    </script>
-                </div>
+                        <!--Table Details-->
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <h4>Item</h4>
+                                    </th>
+                                    <th>
+                                        <h4>Description</h4>
+                                    </th>
+                                    <th>
+                                        <h4>Unit</h4>
+                                    </th>
+                                    <th>
+                                        <h4>Quantity</h4>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($item as $items) :
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $items->itemName; ?></td>
+                                        <td><?php echo $items->itemDescription; ?></td>
+                                        <td><?php echo $items->unit; ?></td>
+                                        <td><?php echo $items->quantity; ?></td>
+                                        <td><input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden /></td>
+                                    </tr>
+                                <?php
+                            endforeach; ?>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!--End of Container-->
+
+
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary pull-right">Save PO</button>
+                        </form>
+                    </div>
+
+
+                    <!--Printing button-->
+                    <?php echo form_open('forTest/printPO');?>
+                    <div class="box-footer">
+                        <button class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
+                        <!--JS for Printing-->
+                        </form>
+                    </div>
             </section>
             <!-- /.content -->
         </div>
+
+
+    </div>
 
     </div>
 

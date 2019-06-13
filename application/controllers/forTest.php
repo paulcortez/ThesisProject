@@ -23,33 +23,36 @@ class forTest extends CI_Controller
         return $idNumber;
     }
 
-    public function printPurchaseOrder()
+    public function printPO()
     {
         $transID = $this->input->post('reqID');
         $data['item'] = $this->request_model->displayRequest($transID);
-        $this->load->view('invoice-print', $data);
+        $this->load->view('purchase_dept/invoice-print', $data);
     }
 
-    public function createPO()
-    {
+    public function createPO(){
         $transID = $this->input->post('reqID');
-        $data['requestID'] = $this->request_model->get_request_id($transID);
         $data['item'] = $this->request_model->displayRequest($transID);
-        $this->load->view('po', $data);
+        $this->load->view('purchase_dept/invoice-print', $data);
     }
-
 
     public function createPurchaseOrder()
     {
-         $supplier = $this->input->post('supplier');
-         $address = $this->input->post('address');
-         $contact = $this->input->post('contact');
+         $poNumber = $this->input->post('po_number');
+         $supplier = $this->request_model->get_supplier_id($this->input->post('supplier')); 
          $creditTerms = $this->input->post('credit');
          $orderDate = $this->input->post('date');
+         $requestID = $this->input->post('reqID');
 
          $purchaseOrder = array(
-             
+            'PO_number' => $poNumber,
+            'supplier_id' =>$supplier,
+            'request_id' => $requestID,
+            'order_date' => $orderDate,
+            'credit_terms' => $creditTerms
          );
+
+         $this->request_model->purchaseOrder($purchaseOrder); 
     }
 
     public function test_one()
@@ -74,10 +77,5 @@ class forTest extends CI_Controller
             $supplierContanct = $this->request_model->get_supplier_contact($name);
             echo $supplierContanct;
         }
-    }
-
-    public function test()
-    {
-        $this->load->view('dept_views/purchase_dept');
     }
 }
