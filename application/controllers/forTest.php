@@ -1,6 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 class forTest extends CI_Controller
 {
+
     public function __construct()
     {
         parent::__construct();
@@ -18,41 +19,63 @@ class forTest extends CI_Controller
         $this->load->view('purchase_dept/purchase_order', $data);
     }
 
-    public function id(){
-        $idNumber = rand(10,100);
+    public function id()
+    {
+        $idNumber = rand(10, 100);
         return $idNumber;
     }
 
-    public function printPO()
+    public function print()
     {
         $transID = $this->input->post('reqID');
+        $poNumber = $this->input->post('poNumber');
+        $data['supplier'] = $this->request_model->displaySupplier($poNumber);
+        $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
         $data['item'] = $this->request_model->displayRequest($transID);
-        $this->load->view('purchase_dept/invoice-print', $data);
-    }
-
-    public function createPO(){
-        $transID = $this->input->post('reqID');
-        $data['item'] = $this->request_model->displayRequest($transID);
-        $this->load->view('purchase_dept/invoice-print', $data);
+        $this->load->view('purchase_dept/print', $data);
     }
 
     public function createPurchaseOrder()
     {
-         $poNumber = $this->input->post('po_number');
-         $supplier = $this->request_model->get_supplier_id($this->input->post('supplier')); 
-         $creditTerms = $this->input->post('credit');
-         $orderDate = $this->input->post('date');
-         $requestID = $this->input->post('reqID');
+        $poNumber = $this->input->post('po_number');
+        $supplier = $this->request_model->get_supplier_id($this->input->post('supplier'));
+        $creditTerms = $this->input->post('credit');
+        $orderDate = $this->input->post('date');
+        $requestID = $this->input->post('reqID');
 
-         $purchaseOrder = array(
+        $purchaseOrder = array(
             'PO_number' => $poNumber,
-            'supplier_id' =>$supplier,
+            'supplier_id' => $supplier,
             'request_id' => $requestID,
             'order_date' => $orderDate,
             'credit_terms' => $creditTerms
-         );
+        );
 
-         $this->request_model->purchaseOrder($purchaseOrder); 
+        $this->request_model->purchaseOrder($purchaseOrder);
+    }
+
+    public function editPurchaseOrder(){
+        $poNumber = $this->input->post('po_number');
+        $supplier = $this->request_model->get_supplier_id($this->input->post('supplier'));
+        $creditTerms = $this->input->post('credit');
+        $orderDate = $this->input->post('date');
+        $requestID = $this->input->post('reqID');
+
+        $purchaseOrder = array( 
+            'supplier_id' => $supplier,
+            'request_id' => $requestID,
+            'order_date' => $orderDate,
+            'credit_terms' => $creditTerms
+        );
+
+        $this->request_model->update_po($poNumber, $purchaseOrder);
+        $transID = $this->input->post('reqID');
+        $poNumber = $this->input->post('poNumber');
+        $data['po_supplier'] = $this->request_model->display_supplier();
+        $data['supplier'] = $this->request_model->displaySupplier($poNumber);
+        $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
+        $data['item'] = $this->request_model->displayRequest($transID);
+        $this->load->view('purchase_dept/po_edit', $data);
     }
 
     public function test_one()
@@ -77,5 +100,19 @@ class forTest extends CI_Controller
             $supplierContanct = $this->request_model->get_supplier_contact($name);
             echo $supplierContanct;
         }
+    }
+
+    public function view_po(){
+        $data['po'] = $this->request_model->displayPO();
+        $this->load->view('purchase_dept/po_list', $data);
+    }
+
+    public function test_po(){
+        $transID = $this->input->post('reqID');
+        $poNumber = $this->input->post('poNumber');
+        $data['supplier'] = $this->request_model->displaySupplier($poNumber);
+        $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
+        $data['item'] = $this->request_model->displayRequest($transID);
+        $this->load->view('purchase_dept/po_test', $data);
     }
 }

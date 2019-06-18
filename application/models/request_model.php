@@ -80,6 +80,11 @@ class Request_model extends CI_Model{
         $this->db->insert('purchase_order', $purchaseOrder);
     }
 
+    public function update_po($poNumber, $details){
+        $this->db->where('PO_number', $poNumber);
+        $this->db->update('purchase_order', $details);
+        return $this->db->affected_rows();
+    }
 
     //====================Request manipulation============================//
     public function addRequest($request){
@@ -212,6 +217,13 @@ class Request_model extends CI_Model{
         return $query->result();
     }
 
+    public function display_supplier(){
+        $this->db->select('supplierID, supplierName, supplierAddress, phone_no');
+        $this->db->from('supplier'); 
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     //For Printing
     public function displayRequest($requestID){
         $this->db->select('itemID, itemName, itemDescription, unit, quantity, item.requestID');
@@ -221,11 +233,27 @@ class Request_model extends CI_Model{
         return $query->result();
     }
 
-    public function displaySupplier( ){
-        $this->db->select('supplierID, supplierName, supplierAddress, phone_no');
-        $this->db->from('supplier'); 
+    public function displaySupplier($poNumber){
+        $this->db->select('supplier_id, supplierID, supplierName, supplierAddress, phone_no, PO_number');
+        $this->db->from('purchase_order');
+        $this->db->join('supplier', 'supplier.supplierID = purchase_order.supplier_id');
+        $this->db->where('PO_number', $poNumber); 
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function displayPurchaseOrder($poNumber){
+        $this->db->select('PO_number, credit_terms, order_date');
+        $this->db->from('purchase_order');
+        $this->db->where('PO_number', $poNumber);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function displayPO(){
+        $this->db->select('PO_number, request_id, order_date');
+        $this->db->from('purchase_order'); 
         $query = $this->db->get();
         return $query->result();
     }
-
 }
