@@ -54,14 +54,15 @@ class forTest extends CI_Controller
         $this->request_model->purchaseOrder($purchaseOrder);
     }
 
-    public function editPurchaseOrder(){
+    public function editPurchaseOrder()
+    {
         $poNumber = $this->input->post('po_number');
         $supplier = $this->request_model->get_supplier_id($this->input->post('supplier'));
         $creditTerms = $this->input->post('credit');
         $orderDate = $this->input->post('date');
         $requestID = $this->input->post('reqID');
 
-        $purchaseOrder = array( 
+        $purchaseOrder = array(
             'supplier_id' => $supplier,
             'request_id' => $requestID,
             'order_date' => $orderDate,
@@ -80,9 +81,6 @@ class forTest extends CI_Controller
 
     public function test_one()
     {
-        //  $supplierID = $this->request_model->get_supplier_id($supplierName);
-        //  $supplierName = $this->input->post('supplier');
-
         $name = $this->input->post('supplier');
         if (isset($_POST['supplier'])) {
             $supplierAddress = $this->request_model->get_supplier_address($name);
@@ -92,9 +90,6 @@ class forTest extends CI_Controller
 
     public function test_two()
     {
-        //  $supplierID = $this->request_model->get_supplier_id($supplierName);
-        //  $supplierName = $this->input->post('supplier');
-
         $name = $this->input->post('supplier');
         if (isset($_POST['supplier'])) {
             $supplierContanct = $this->request_model->get_supplier_contact($name);
@@ -102,12 +97,14 @@ class forTest extends CI_Controller
         }
     }
 
-    public function view_po(){
+    public function view_po()
+    {
         $data['po'] = $this->request_model->displayPO();
         $this->load->view('purchase_dept/po_list', $data);
     }
 
-    public function test_po(){
+    public function test_po()
+    {
         $transID = $this->input->post('reqID');
         $poNumber = $this->input->post('poNumber');
         $data['supplier'] = $this->request_model->displaySupplier($poNumber);
@@ -115,4 +112,5 @@ class forTest extends CI_Controller
         $data['item'] = $this->request_model->displayRequest($transID);
         $this->load->view('purchase_dept/po_test', $data);
     }
+    
 }

@@ -54,7 +54,7 @@
             //Address
             $(document).ready(function() {
                 $('#supplier').change(function() {
-                    $.post('forTest/test_one', {
+                    $.post('test_one', {
                         supplier: $(this).val()
                     }, function(data) {
                         $('#address').val(data);
@@ -65,7 +65,7 @@
             //Contact
             $(document).ready(function() {
                 $('#supplier').change(function() {
-                    $.post('forTest/test_two', {
+                    $.post('test_two', {
                         supplier: $(this).val()
                     }, function(data) {
                         $('#contact').val(data);
@@ -379,9 +379,9 @@ document.getElementById("demo").innerHTML = d.toDateString();
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <?php echo form_open('forTest/createPurchaseOrder');?>
+                                    <?php echo form_open('forTest/editPurchaseOrder');?>
                                         <h4>Supplier: </h4>
-                                        <select class="form-control" name="supplier" id="supplier">a
+                                        <select class="form-control" name="supplier" id="supplier">
                                             <option selected="disabled"><?php echo $supplier->supplierName; ?></option>
                                             <?php foreach ($po_supplier as $supplier) : ?>
                                                 <option value="<?php echo $supplier->supplierName; ?>"><?php echo $supplier->supplierName; ?></option>
@@ -391,23 +391,23 @@ document.getElementById("demo").innerHTML = d.toDateString();
 
                                 <div class="col-lg-6">
                                     <h4>P.O.Number</h4>
-                                    <input type="text" name="po_number" value="" class="form-control" placeholder="Purchase Order Number" readonly>
+                                    <input type="text" name="po_number" value="<?php echo $po_details->PO_number; ?>" class="form-control" placeholder="Purchase Order Number" readonly>
                                 </div>
 
 
                                 <div class="col-lg-12">
                                     <h4>Address</h4>
-                                    <input type="text" name="address" id="address" class="form-control" placeholder="Address">
+                                    <input type="text" name="address" value="<?php echo $supplier->supplierAddress; ?>" id="address" class="form-control" placeholder="Address">
                                 </div>
 
                                 <div class="col-lg-12">
                                     <h4>Tel. #, Fax #:</h4>
-                                    <input type="text" name="contact" id="contact" class="form-control" placeholder="Tel. #, Fax #">
+                                    <input type="text" name="contact" value="<?php echo $supplier->phone_no; ?>" id="contact" class="form-control" placeholder="Tel. #, Fax #">
                                 </div>
 
                                 <div class="col-lg-6">
                                     <h4>Credit Terms: </h4>
-                                    <input type="text" name="credit" class="form-control" placeholder="Credit Terms">
+                                    <input type="text" name="credit" value="<?php echo $po_details->credit_terms; ?>" class="form-control" placeholder="Credit Terms">
                                 </div>
 
                                 <div class="col-lg-6">
