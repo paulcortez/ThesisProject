@@ -1,24 +1,29 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class UserRequest extends CI_Controller{
+class UserRequest extends CI_Controller
+{
 
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('request_model');
         $this->load->helper('date');
     }
 
-   public function index(){
-       $this->load->view('user/requestView');
-   }
+    public function index()
+    {
+        $this->load->view('user/requestView');
+    }
 
-//---------------------------------Item 
-    public function new_request(){
+    //---------------------------------Item 
+    public function new_request()
+    {
         $newRequest = array(
-            $user = $this->request_model->get_user_id($this->session->userdata('username'))); 
-            $date = date("Y-m-d");
-            $newRequest = array(
+            $user = $this->request_model->get_user_id($this->session->userdata('username'))
+        );
+        $date = date("Y-m-d");
+        $newRequest = array(
             'userID' => $user,
             'date_requested' => $date,
             'status' => 'Pending Submission'
@@ -31,13 +36,14 @@ class UserRequest extends CI_Controller{
         $this->load->view('user/AddItemView', $data);
     }
 
-    public function add_item(){
+    public function add_item()
+    {
         $item = $this->input->post('item');
         $description = $this->input->post('description');
         $unit = $this->input->post('unit');
         $quantity = $this->input->post('quantity');
         $reqID = $this->session->userdata('requestID');
-       
+
         $item = array(
             'itemName' => $item,
             'itemDescription' => $description,
@@ -52,7 +58,8 @@ class UserRequest extends CI_Controller{
         $this->load->view('user/RequisitionForm', $data);
     }
 
-    public function edit_item(){
+    public function edit_item()
+    {
         $item = $this->input->post('item');
         $description = $this->input->post('description');
         $unit = $this->input->post('unit');
@@ -73,7 +80,8 @@ class UserRequest extends CI_Controller{
         $this->load->view('user/RequisitionForm', $data);
     }
 
-    public function delete_item(){
+    public function delete_item()
+    {
         $itemID = $this->input->post('itemID');
         $reqID = $this->session->userdata('requestID');
 
@@ -82,11 +90,12 @@ class UserRequest extends CI_Controller{
         $data['item'] = $this->request_model->display_item();
         $this->load->view('user/RequisitionForm', $data);
     }
-    
+
 
     //-------------------------------Request
 
-    public function edit_request(){
+    public function edit_request()
+    {
         $reqID = $this->input->post('requestID');
         $this->session->set_userdata('requestID', $reqID);
         $data['requestID'] = $reqID;
@@ -94,39 +103,52 @@ class UserRequest extends CI_Controller{
         $this->load->view('user/pendingItems', $data);
     }
 
-    public function delete_request(){
+    public function delete_request()
+    {
         $reqID = $this->input->post('requestID');
         $this->request_model->delete_request($reqID);
         redirect('UserRequest/trackView');
     }
 
-    public function submit_request(){
+    public function submit_request()
+    {
         $id = $this->request_model->get_user_id($this->session->userdata('username'));
         $transID = $this->session->userdata('requestID');
         $current_date = date("Y-m-d");
+        $department = $this->request_model->get_user_department($id);
 
-        $request = array(
-            'userID' => $id,
-            'date_requested' => $current_date,
-            'status' => 'Waiting Dean'
-        );
-        $this->request_model->update_request($transID, $request);
-        redirect('page/ccs');
-
+        if ($department !== 'Purchasing') {
+            $request = array(
+                'userID' => $id,
+                'date_requested' => $current_date,
+                'status' => 'Waiting Dean'
+            );
+            $this->request_model->update_request($transID, $request);
+            redirect('page/ccs');
+        } else {
+            $request = array(
+                'userID' => $id,
+                'date_requested' => $current_date,
+                'status' => 'Processing'
+            );
+            $this->request_model->update_request($transID, $request);
+            redirect('approval/displayRequestPurchasing');
+        }
     }
 
 
     //--------------------Comment----------------------//
 
-    public function userComment(){
+    public function userComment()
+    {
         $comment = $this->input->post('comment');
         $userID = $this->request_model->get_user_id($this->session->userdata('username'));
         $requestID = $this->input->post('reqID');
-      
+
         $newComment = array(
             'comment' => $comment,
             'userID' => $userID,
-            'requestID'=> $requestID
+            'requestID' => $requestID
         );
 
         $this->request_model->itemComment($newComment);
@@ -137,24 +159,26 @@ class UserRequest extends CI_Controller{
 
 
     //Display
-    public function display_request(){
-         $data['pendingRequest'] = $this->request_model->displayOpenRequest($this->request_model->get_user_id($this->session->userdata('username')));
-         $this->load->view('user/pending_req_view', $data);
+    public function display_request()
+    {
+        $data['pendingRequest'] = $this->request_model->displayOpenRequest($this->request_model->get_user_id($this->session->userdata('username')));
+        $this->load->view('user/pending_req_view', $data);
     }
 
 
-    public function trackView(){
+    public function trackView()
+    {
         $data['pendingItems'] = $this->request_model->display_request($this->request_model->get_user_id($this->session->userdata('username')));
-        $data['item'] = $this->request_model->display_item(); 
+        $data['item'] = $this->request_model->display_item();
         $data['comment'] = $this->request_model->displayComment();
         $this->load->view('user/trackingViewUser', $data);
     }
 
-    public function declinedRequest(){
+    public function declinedRequest()
+    {
         $data['declinedRequest'] = $this->request_model->declinedRequest($this->request_model->get_user_id($this->session->userdata('username')));
-        $data['item'] = $this->request_model->display_item(); 
+        $data['item'] = $this->request_model->display_item();
         $data['comment'] = $this->request_model->displayComment();
         $this->load->view('user/declinedRequest', $data);
     }
-
 }

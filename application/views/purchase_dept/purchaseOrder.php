@@ -450,16 +450,17 @@ document.getElementById("demo").innerHTML = d.toDateString();
 
                         <!--Printing button-->
                         <div class="box-footer">
-                            <?php echo form_open('forTest/editPurchaseOrder');?>
+                            <?php echo form_open('PurchasingDept/editPurchaseOrder');?>
                             <button type="submit" class="btn btn-success">Edit</button>
                             <input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden />
                             <input type="text" name="poNumber" value=<?php echo $po_details->PO_number; ?> hidden />
                             </form>
-                        <!--
-                            <?php echo form_open('forTest/print');?>
+                        
+                            <?php echo form_open('PurchasingDept/print');?>
                             <button class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
-                            <td><input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden /></td>
-                            </form>-->
+                            <input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden />
+                            <input type="text" name="poNumber" value=<?php echo $po_details->PO_number; ?> hidden />
+                            </form> 
  
                             
                             <!--JS for Printing

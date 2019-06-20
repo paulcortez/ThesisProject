@@ -54,7 +54,7 @@
             //Address
             $(document).ready(function() {
                 $('#supplier').change(function() {
-                    $.post('test_one', {
+                    $.post('show_address', {
                         supplier: $(this).val()
                     }, function(data) {
                         $('#address').val(data);
@@ -65,7 +65,7 @@
             //Contact
             $(document).ready(function() {
                 $('#supplier').change(function() {
-                    $.post('test_two', {
+                    $.post('show_contact', {
                         supplier: $(this).val()
                     }, function(data) {
                         $('#contact').val(data);
@@ -379,7 +379,7 @@ document.getElementById("demo").innerHTML = d.toDateString();
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <?php echo form_open('forTest/editPurchaseOrder');?>
+                                    <?php echo form_open('PurchasingDept/updatePurchaseOrder');?>
                                         <h4>Supplier: </h4>
                                         <select class="form-control" name="supplier" id="supplier">
                                             <option selected="disabled"><?php echo $supplier->supplierName; ?></option>

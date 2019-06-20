@@ -28,6 +28,6 @@ class Page extends CI_Controller
 
   public function purchasing()
   {
-    $this->load->view('dept_views/purchasing_view');
+    $this->load->view('dept_views/purchasing_dept');
   }
 }

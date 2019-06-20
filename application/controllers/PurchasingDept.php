@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class forTest extends CI_Controller
+class PurchasingDept extends CI_Controller
 {
 
     public function __construct()
@@ -15,7 +15,7 @@ class forTest extends CI_Controller
         $data['id'] = $this->id();
         $data['requestID'] = $this->request_model->get_request_id($transID);
         $data['item'] = $this->request_model->displayRequest($transID);
-        $data['suppliers'] = $this->request_model->displaySupplier();
+        $data['suppliers'] = $this->request_model->display_supplier();
         $this->load->view('purchase_dept/purchase_order', $data);
     }
 
@@ -56,6 +56,17 @@ class forTest extends CI_Controller
 
     public function editPurchaseOrder()
     {
+        $transID = $this->input->post('reqID');
+        $poNumber = $this->input->post('poNumber');
+        $data['po_supplier'] = $this->request_model->display_supplier();
+        $data['supplier'] = $this->request_model->displaySupplier($poNumber);
+        $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
+        $data['item'] = $this->request_model->displayRequest($transID);
+        $this->load->view('purchase_dept/editPurchaseOrder', $data);
+    }
+
+    public function updatePurchaseOrder()
+    {
         $poNumber = $this->input->post('po_number');
         $supplier = $this->request_model->get_supplier_id($this->input->post('supplier'));
         $creditTerms = $this->input->post('credit');
@@ -70,31 +81,7 @@ class forTest extends CI_Controller
         );
 
         $this->request_model->update_po($poNumber, $purchaseOrder);
-        $transID = $this->input->post('reqID');
-        $poNumber = $this->input->post('poNumber');
-        $data['po_supplier'] = $this->request_model->display_supplier();
-        $data['supplier'] = $this->request_model->displaySupplier($poNumber);
-        $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
-        $data['item'] = $this->request_model->displayRequest($transID);
-        $this->load->view('purchase_dept/po_edit', $data);
-    }
-
-    public function test_one()
-    {
-        $name = $this->input->post('supplier');
-        if (isset($_POST['supplier'])) {
-            $supplierAddress = $this->request_model->get_supplier_address($name);
-            echo $supplierAddress;
-        }
-    }
-
-    public function test_two()
-    {
-        $name = $this->input->post('supplier');
-        if (isset($_POST['supplier'])) {
-            $supplierContanct = $this->request_model->get_supplier_contact($name);
-            echo $supplierContanct;
-        }
+        redirect('PurchasingDept/view_po');
     }
 
     public function view_po()
@@ -103,14 +90,34 @@ class forTest extends CI_Controller
         $this->load->view('purchase_dept/po_list', $data);
     }
 
-    public function test_po()
+    public function purchaseOrder()
     {
         $transID = $this->input->post('reqID');
         $poNumber = $this->input->post('poNumber');
         $data['supplier'] = $this->request_model->displaySupplier($poNumber);
         $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
         $data['item'] = $this->request_model->displayRequest($transID);
-        $this->load->view('purchase_dept/po_test', $data);
+        $this->load->view('purchase_dept/purchaseOrder', $data);
     }
-    
+
+
+
+    //Populate textboxes id=Address/Contact on dropdown select
+    public function show_address()
+    {
+        $name = $this->input->post('supplier');
+        if (isset($_POST['supplier'])) {
+            $supplierAddress = $this->request_model->get_supplier_address($name);
+            echo $supplierAddress;
+        }
+    }
+
+    public function show_contact()
+    {
+        $name = $this->input->post('supplier');
+        if (isset($_POST['supplier'])) {
+            $supplierContanct = $this->request_model->get_supplier_contact($name);
+            echo $supplierContanct;
+        }
+    }
 }

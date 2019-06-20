@@ -15,6 +15,17 @@ class Request_model extends CI_Model{
          }
     }
 
+    public function get_user_department($id){
+        $this->db->select('department')->from('users')->where('userID', $id);
+        $query = $this->db->get();
+        
+         if($query->num_rows() > 0)
+         {
+            $row = $query->row(0);
+            return $row->department;
+         }
+    }
+
     //-----------------------------item processing-----------------------------//
     //get item id
     public function get_item_id(){
