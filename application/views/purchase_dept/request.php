@@ -248,41 +248,21 @@
         </div>
 
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        
-                <ul class="sidebar-menu" data-widget="tree">
-                    <li class="header">MAIN NAVIGATION</li>
-                    <li class="active treeview">
+        <ul class="sidebar-menu" data-widget="tree">
+          <li class="header">MAIN NAVIGATION</li>
+          <li class="active treeview">
 
-                        <ul class="treeview-menu">
-                            <li ><a href="<?php echo base_url('index.php/page/purchasing')?>"><i class="fa fa-circle-o"></i> Dashboard</a></li>
-                            <li class="active"><a href="<?php echo base_url('index.php/PurchasingDept/view_po')?>"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Request</a>
-                                <div class="dropdown-menu">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/UserRequest/new_request')?>" class="dropdown-item">New Request</a></li>
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/approval/displayRequestPurchasing')?>" class="dropdown-item">Requst List</a></li>
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Supplier</a>
-                                <div class="dropdown-menu">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">Supplier List</a></li>
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">New Supplier</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li><a href=""><i class="fa fa-circle-o"></i> Approval</a></li>
-                            <li><a href=""><i class="fa fa-circle-o"></i> Transaction History</a></li>
-                            <li><a href=""><i class="fa fa-circle-o"></i> Reports</a></li>
-                        </ul>
-                    </li>
-                </ul>
+            <ul class="treeview-menu">
+              <li class="active"><a href=#><i class="fa fa-circle-o"></i> Requests Information</a></li>
+              <li><a href="<?php echo base_url() ?>index.php/approval/displayRequestPurchasing"><i class="fa fa-circle-o"></i> Approval</a></li>
+              <li><a href="<?php echo base_url() ?>index.php/UserRequest/new_request"><i class="fa fa-circle-o"></i>Create Request</a></li>
+              <li><a href="<?php echo base_url() ?>index.php/UserRequest/trackView"><i class="fa fa-circle-o"></i> Track Request</a></li>
+              <li><a href="index2.html"><i class="fa fa-circle-o"></i> Activity Log</a></li>
+            </ul>
+          </li>
 
-                <!-- /.sidebar -->
+      </section>
+      <!-- /.sidebar -->
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
@@ -350,33 +330,158 @@
             <thead>
               <tr>
                 <th scope="col" class="col-lg-4 col-sm-8">
-                  <h4>PO #</h4>
+                  <h4>Request ID</h4>
                 </th>
                 <th scope="col" class="col-lg-4 col-sm-8">
-                  <h4>Order Date</h4>
+                  <h4>Date Requested</h4>
                 </th>
-                <th scope="col" class="col-lg-4 col-sm-8"> 
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Requested By</h4>
+                </th>
+                <th scope="col" class="col-lg-4 col-sm-8">
+                  <h4>Department</h4>
                 </th>
               </tr>
             </thead>
             <tbody>
-                <?php foreach($po as $purchOrder):?>
+
+              <?php foreach ($requests as $request) : ?>
                 <tr>
-                    <td><?php echo $purchOrder->PO_number;?></td>
-                    <td><?php echo $purchOrder->order_date;?></td>
-                    <?php echo form_open('PurchasingDept/purchaseOrder');?>
-                    <td><button type="submit" class="btn btn-success">View</button></td>
-                    <td><input type="text" name="poNumber" value=<?php echo $purchOrder->PO_number; ?> hidden /></td>
-                    <td><input type="text" name="reqID" value=<?php echo $purchOrder->request_id; ?> hidden /></td>  
-                    
-                  </form>
-                </tr>
-        <?php endforeach;?>
-            </tbody>
+                  <td><?php echo $request->requestID; ?></td>
+                  <td><?php echo $request->date_requested; ?></td>
+                  <td><?php echo $request->username; ?></td>
+                  <td><?php echo $request->department; ?></td>
+                  <td>
+
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal1<?php echo $request->requestID; ?>">
+                      Comment
+                    </button>
+
+                    <!-- Modal -->
+                    <?php echo form_open('comment/userComment'); ?>
+
+                    <div class="modal fade" id="exampleModal1<?php echo $request->requestID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <link rel="stylesheet" type="text/css" href="comment.css">
+                            <div class="titleBox">
+                              <label>Comment Section</label>
+                            </div>
+
+                            <div class="actionBox">
+                              <?php foreach ($comment as $comments) :
+                                if ($comments->requestID == $request->requestID) {
+                                  ?>
+                                  <ul class="commentList">
+                                    <div class="commentText">
+                                      <p><b><?php echo $comments->username; ?></b> <?php echo $comments->comment; ?></p> <span class="date sub-text"><?php echo $comments->date ?></span>
+                                    </div>
+                                  </ul>
+                                <?php }
+                            endforeach; ?>
+                            </div>
+
+                            <input type="text" name="requestID" value=<?php echo $request->requestID; ?> hidden />
+
+
+                            <div class="form-group">
+                              <input class="form-control" name="comment" type="text" placeholder="Your comments" />
+                            </div>
+                            <div class="form-group">
+                              <button class="btn btn-default">Add</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
+                  </td>
+
+
+                  <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal<?php echo $request->requestID; ?>">
+                      View Details
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal<?php echo $request->requestID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Items</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+
+                          <div class="modal-body">
+                            <table class="table" id="myTable">
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="col-lg-2 col-sm-8">
+                                    <h4>Item name</h4>
+                                  </th>
+                                  <th scope="col" class="col-lg-5 col-sm-8">
+                                    <h4>Description</h4>
+                                  </th>
+                                  <th scope="col" class="col-lg-2 col-sm-4">
+                                    <h4>Unit</h4>
+                                  </th>
+                                  <th scope="col" class="col-lg-2 col-sm-4">
+                                    <h4>Quantity</h4>
+                                  </th>
+                                  <th scope="col" class="col-lg-2 col-sm-4">
+                                    <h4>Request ID</h4>
+                                  </th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <?php foreach ($requestItems as $items) :
+                                  if ($items->requestID == $request->requestID) {
+                                    ?>
+                                    <tr>
+                                      <td><?php echo $items->itemName; ?></td>
+                                      <td><?php echo $items->itemDescription; ?></td>
+                                      <td><?php echo $items->unit; ?></td>
+                                      <td><?php echo $items->quantity; ?></td>
+                                      <td><?php echo $items->requestID; ?></td>
+                                    </tr>
+                                  <?php }
+                              endforeach; ?>
+                              </tbody>
+
+                          </div>
+            </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+    </div>
+    </div>
+    </td>
+
+    <?php echo form_open('PurchasingDept/processPO') ?>
+    <td><button type="submit" class="btn btn-success">Process PO</button></td>
+    <td><input type="text" name="reqID" value=<?php echo $request->requestID; ?> hidden /></td>
+    </form>
+    </tr>
+
+  <?php endforeach; ?>
+  </tbody>
 
   </div>
   </div>
   </table>
+  </div>
 
 
   </section>

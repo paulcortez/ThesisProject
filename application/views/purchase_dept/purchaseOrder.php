@@ -430,38 +430,38 @@ document.getElementById("demo").innerHTML = d.toDateString();
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($item as $items) :
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $items->itemName; ?></td>
-                                            <td><?php echo $items->itemDescription; ?></td>
-                                            <td><?php echo $items->unit; ?></td>
-                                            <td><?php echo $items->quantity; ?></td>
-                                            <td><input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden /></td>
-                                        </tr>
-                                    <?php
-                                endforeach; ?>
+                                <?php foreach ($items as $item) :
+                                    ?>
+                                    <tr>
+                                      <td><?php echo $item->itemName; ?></td>
+                                      <td><?php echo $item->itemDescription; ?></td>
+                                      <td><?php echo $item->unit; ?></td>
+                                      <td><?php echo $item->quantity; ?></td>
+                                      <td><?php echo $item->requestID; ?></td>
                                     </tr>
-                                </tbody>
+                                  <?php  
+                              endforeach; ?>
+                              </tbody>
                             </table>
 
                         </div>
                         <!--End of Container-->
 
                         <!--Printing button-->
-                        <div class="box-footer">
+                         <!--Printing button-->
+                         <div class="box-footer">
                             <?php echo form_open('PurchasingDept/editPurchaseOrder');?>
                             <button type="submit" class="btn btn-success">Edit</button>
-                            <input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden />
+                            <input type="text" name="reqID" value=<?php echo $item->requestID; ?> hidden />
                             <input type="text" name="poNumber" value=<?php echo $po_details->PO_number; ?> hidden />
                             </form>
                         
                             <?php echo form_open('PurchasingDept/print');?>
                             <button class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
-                            <input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden />
+                            <input type="text" name="reqID" value=<?php echo $item->requestID; ?> hidden />
                             <input type="text" name="poNumber" value=<?php echo $po_details->PO_number; ?> hidden />
                             </form> 
- 
+                           
                             
                             <!--JS for Printing
           <script>

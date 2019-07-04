@@ -14,14 +14,15 @@ class PurchasingDept extends CI_Controller
         $transID = $this->input->post('reqID');
         $data['id'] = $this->id();
         $data['requestID'] = $this->request_model->get_request_id($transID);
-        $data['item'] = $this->request_model->displayRequest($transID);
+        $data['item'] = $this->request_model->display_item_po();
         $data['suppliers'] = $this->request_model->display_supplier();
-        $this->load->view('purchase_dept/purchase_order', $data);
+        $this->load->view('purchase_dept/createPurchaseOrder', $data);
     }
 
     public function id()
     {
         $idNumber = rand(10, 100);
+        $this->session->set_userdata('po_number', $idNumber);
         return $idNumber;
     }
 
@@ -33,6 +34,16 @@ class PurchasingDept extends CI_Controller
         $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
         $data['item'] = $this->request_model->displayRequest($transID);
         $this->load->view('purchase_dept/print', $data);
+    }
+
+    public function processPO()
+    {
+        $transID = $this->input->post('reqID');
+        $data['id'] = $this->id();
+        $data['requestID'] = $this->request_model->get_request_id($transID);
+        $data['item'] = $this->request_model->displayRequest($transID);
+        $data['suppliers'] = $this->request_model->display_supplier();
+        $this->load->view('purchase_dept/processingPO', $data);
     }
 
     public function createPurchaseOrder()
@@ -96,7 +107,7 @@ class PurchasingDept extends CI_Controller
         $poNumber = $this->input->post('poNumber');
         $data['supplier'] = $this->request_model->displaySupplier($poNumber);
         $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
-        $data['item'] = $this->request_model->displayRequest($transID);
+        $data['items'] = $this->request_model->displayRequest($transID);
         $this->load->view('purchase_dept/purchaseOrder', $data);
     }
 

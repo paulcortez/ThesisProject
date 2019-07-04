@@ -51,7 +51,7 @@ class Request_model extends CI_Model{
         }
     }
 
-    //supplier  
+    //--------------------------------supplier  
     public function get_supplier_id($name){
         $this->db->select('supplierID')->from('supplier')->where('supplierName', $name);
         $query = $this->db->get();
@@ -91,11 +91,23 @@ class Request_model extends CI_Model{
         $this->db->insert('purchase_order', $purchaseOrder);
     }
 
+    public function get_po_number($po_number){
+        $this->db->select('PO_number')->from('purchase_order')->where('PO_number', $po_number);
+        $query = $this->db->get();
+
+        if($query->num_rows() == 1 ){
+            $row = $query->row(0);
+
+            return $row->PO_number;
+        }
+    }
+
     public function update_po($poNumber, $details){
         $this->db->where('PO_number', $poNumber);
         $this->db->update('purchase_order', $details);
         return $this->db->affected_rows();
     }
+
 
     //====================Request manipulation============================//
     public function addRequest($request){
@@ -149,6 +161,14 @@ class Request_model extends CI_Model{
         $this->db->select('itemID, itemName, itemDescription, unit, quantity, item.requestID');
         $this->db->from('item_request');
         $this->db->join('item', 'item.requestID = item_request.requestID');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function display_item_po(){
+        $this->db->select('itemID, itemName, itemDescription, unit, quantity, item.PO_Number');
+        $this->db->from('purchase_order');
+        $this->db->join('item', 'item.PO_Number = purchase_order.PO_number');
         $query = $this->db->get();
         return $query->result();
     }
@@ -235,11 +255,21 @@ class Request_model extends CI_Model{
         return $query->result();
     }
 
+
+
     //For Printing
     public function displayRequest($requestID){
         $this->db->select('itemID, itemName, itemDescription, unit, quantity, item.requestID');
         $this->db->from('item');
         $this->db->where('item.requestID' , $requestID);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function item($id){
+        $this->db->select('itemID, itemName, itemDescription, unit, quantity, item.requestID');
+        $this->db->from('item');
+        $this->db->where('requestID', $id);
         $query = $this->db->get();
         return $query->result();
     }

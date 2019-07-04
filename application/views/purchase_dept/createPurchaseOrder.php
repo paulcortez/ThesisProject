@@ -54,7 +54,7 @@
             //Address
             $(document).ready(function() {
                 $('#supplier').change(function() {
-                    $.post('show_address', {
+                    $.post('PurchasingDept/show_address', {
                         supplier: $(this).val()
                     }, function(data) {
                         $('#address').val(data);
@@ -79,7 +79,9 @@
             });
 
             var supplier = $('#supplier').val();
-            $.post('forTest/print', {supplier: supplier});
+            $.post('forTest/print', {
+                supplier: supplier
+            });
 
             /*
                     $('#supplier').change(function(){
@@ -378,15 +380,14 @@ document.getElementById("demo").innerHTML = d.toDateString();
                         <br><br>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <?php echo form_open('forTest/createPurchaseOrder');?>
-                                        <h4>Supplier: </h4>
-                                        <select class="form-control" name="supplier" id="supplier">a
-                                            <option selected="disabled">Select Supplier</option>
-                                            <?php foreach ($suppliers as $supplier) : ?>
-                                                <option value="<?php echo $supplier->supplierName; ?>"><?php echo $supplier->supplierName; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                <div class="col-lg-6"> 
+                                    <h4>Supplier: </h4>
+                                    <select class="form-control" name="supplier" id="supplier">
+                                        <option selected="disabled">Select Supplier</option>
+                                        <?php foreach ($suppliers as $supplier) : ?>
+                                            <option value="<?php echo $supplier->supplierName; ?>"><?php echo $supplier->supplierName; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6">
@@ -427,63 +428,96 @@ document.getElementById("demo").innerHTML = d.toDateString();
                                 </div>
                             </div>
 
-                            <!--Table Details-->
 
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <h4>Item</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Description</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Unit</h4>
-                                        </th>
-                                        <th>
-                                            <h4>Quantity</h4>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($item as $items) :
+                            <form name="addItem" method="post" action="<?php echo site_url('UserRequest/add_item') ?>">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-8">
+                                        <h4>Item </h4>
+                                        <input type="text" class="form-control" placeholder="Item" name="item" id="item">
+                                    </div>
+                                    <div class="col-lg-4 col-sm-8">
+                                        <h4>Description</h4>
+                                        <input type="text" class="form-control" placeholder="Description" name="description" id="description">
+                                    </div>
+
+                                    <div class="col-lg-2 col-sm-4">
+                                        <h4>Unit</h4>
+                                        <input type="text" class="form-control" placeholder="Unit" name="unit" id="unit">
+                                    </div>
+
+
+                                    <div class="col-lg-2 col-sm-4">
+                                        <h4>Quantity</h4>
+                                        <input type="text" class="form-control" placeholder="Quantity" name="quantity" id="quantity">
+                                    </div>
+
+                                </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-success pull-right">Add</button><br> <br><br><br>
+                        </div>
+                        </form>
+
+                        <!--Table Details-->
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <h4>Item</h4>
+                                    </th>
+                                    <th>
+                                        <h4>Description</h4>
+                                    </th>
+                                    <th>
+                                        <h4>Unit</h4>
+                                    </th>
+                                    <th>
+                                        <h4>Quantity</h4>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($item as $items) :
+                                    if ($items->PO_Number == $id) {
                                         ?>
                                         <tr>
                                             <td><?php echo $items->itemName; ?></td>
                                             <td><?php echo $items->itemDescription; ?></td>
                                             <td><?php echo $items->unit; ?></td>
                                             <td><?php echo $items->quantity; ?></td>
-                                            <td><input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden /></td>
+                                            <td><input type="text" name="reqID" value=<?php echo $items->po_number; ?> hidden /></td>
                                         </tr>
                                     <?php
-                                endforeach; ?>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                }
+                            endforeach; ?>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                        </div>
-                        <!--End of Container-->
+                    </div>
+                    <!--End of Container-->
 
-                        <!--Printing button-->
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-success">Save</button>
-                            </form>
-                           
+                    <!--Printing button-->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        </form>
+
                         <!--
-                            <?php echo form_open('forTest/print');?>
+                            <?php echo form_open('forTest/print'); ?>
                             <button class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
                             <td><input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden /></td>
                             </form>-->
- 
-                            
-                            <!--JS for Printing
+
+
+                        <!--JS for Printing
           <script>
             function myFunction() {
               window.print();
             }
           </script>-->
-                        </div>
+                    </div>
             </section>
             <!-- /.content -->
         </div>

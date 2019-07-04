@@ -51,8 +51,44 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
         <script type="text/javascript">
-          
-           
+            //Address
+            $(document).ready(function() {
+                $('#supplier').change(function() {
+                    $.post('show_address', {
+                        supplier: $(this).val()
+                    }, function(data) {
+                        $('#address').val(data);
+                    });
+                });
+            });
+
+            //Contact
+            $(document).ready(function() {
+                $('#supplier').change(function() {
+                    $.post('show_contact', {
+                        supplier: $(this).val()
+                    }, function(data) {
+                        $('#contact').val(data);
+                    });
+                });
+            });
+
+            //date
+            $(function() {
+                $('#datepicker').datepicker();
+            });
+
+            var supplier = $('#supplier').val();
+            $.post('forTest/print', {supplier: supplier});
+
+            /*
+                    $('#supplier').change(function(){
+                        var address = $('#supplier').val();
+                        $.post('forTest/createPurchaseOrder', {supplier:address}, function(data){
+                            $('#address').val(address);
+                        }); 
+                    });
+            });*/
         </script>
 
 
@@ -265,23 +301,14 @@
                     <li class="active treeview">
 
                         <ul class="treeview-menu">
-                            <li class="active"><a href="<?php echo base_url('index.php/page/purchasing')?>"><i class="fa fa-circle-o"></i> Dashboard</a></li> 
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Purchase Order</a>
-                                <div class="dropdown-menu">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/PurchasingDept')?>" class="dropdown-item">Create PO</a></li>
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/PurchasingDept/view_po')?>" class="dropdown-item">List of PO</a></li>
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
-                                    </ul>
-                                </div>
-                            </li>
+                            <li><a href=""><i class="fa fa-circle-o"></i> Dashboard</a></li>
+                            <li class="active"><a href="RF1.html"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Request</a>
                                 <div class="dropdown-menu">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/UserRequest/new_request')?>" class="dropdown-item">New Request</a></li>
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/approval/displayRequestPurchasing')?>" class="dropdown-item">Requst List</a></li>
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">New Request</a></li>
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">Requst List</a></li>
                                         <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
                                     </ul>
                                 </div>
@@ -331,7 +358,136 @@
 
 
 
-              
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h1 class="box-title">Purchase Order Form</h1>
+
+                        <!--Date:-->
+                        <!--<h5 id="demo" class="pull-right"></h5><br><br>
+<p class="pull-right">Date</p>
+<script>
+var d = new Date();
+document.getElementById("demo").innerHTML = d.toDateString();
+</script>
+</div>
+-->
+                        <!--End of Date-->
+
+
+                        <!--Start of Table -->
+                        <br><br>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <?php echo form_open('PurchasingDept/createPurchaseOrder');?>
+                                        <h4>Supplier: </h4>
+                                        <select class="form-control" name="supplier" id="supplier">a
+                                            <option selected="disabled">Select Supplier</option>
+                                            <?php foreach ($suppliers as $supplier) : ?>
+                                                <option value="<?php echo $supplier->supplierName; ?>"><?php echo $supplier->supplierName; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <h4>P.O.Number</h4>
+                                    <input type="text" name="po_number" value="<?php echo $id; ?>" class="form-control" placeholder="Purchase Order Number" readonly>
+                                </div>
+
+
+                                <div class="col-lg-12">
+                                    <h4>Address</h4>
+                                    <input type="text" name="address" id="address" class="form-control" placeholder="Address">
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <h4>Tel. #, Fax #:</h4>
+                                    <input type="text" name="contact" id="contact" class="form-control" placeholder="Tel. #, Fax #">
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <h4>Credit Terms: </h4>
+                                    <input type="text" name="credit" class="form-control" placeholder="Credit Terms">
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <h4><label>Order Date</label></h4>
+
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="date" name="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                    <!-- /.form group -->
+
+                                </div>
+                            </div>
+
+                            <!--Table Details-->
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <h4>Item</h4>
+                                        </th>
+                                        <th>
+                                            <h4>Description</h4>
+                                        </th>
+                                        <th>
+                                            <h4>Unit</h4>
+                                        </th>
+                                        <th>
+                                            <h4>Quantity</h4>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($item as $items) :
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $items->itemName; ?></td>
+                                            <td><?php echo $items->itemDescription; ?></td>
+                                            <td><?php echo $items->unit; ?></td>
+                                            <td><?php echo $items->quantity; ?></td>
+                                            <td><input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden /></td>
+                                        </tr>
+                                    <?php
+                                endforeach; ?>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!--End of Container-->
+
+                        <!--Printing button-->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
+                            </form>
+                           
+                        <!--
+                            <?php echo form_open('forTest/print');?>
+                            <button class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
+                            <td><input type="text" name="reqID" value=<?php echo $items->requestID; ?> hidden /></td>
+                            </form>-->
+ 
+                            
+                            <!--JS for Printing
+          <script>
+            function myFunction() {
+              window.print();
+            }
+          </script>-->
+                        </div>
+            </section>
+            <!-- /.content -->
+        </div>
+    </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
         <div class="pull-right hidden-xs">

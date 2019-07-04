@@ -37,25 +37,55 @@ class UserRequest extends CI_Controller
     }
 
     public function add_item()
-    {
-        $item = $this->input->post('item');
-        $description = $this->input->post('description');
-        $unit = $this->input->post('unit');
-        $quantity = $this->input->post('quantity');
-        $reqID = $this->session->userdata('requestID');
+    { 
+        $id = $this->request_model->get_user_id($this->session->userdata('username'));
+        $department = $this->request_model->get_user_department($id);
+        
+        if($department == 'Purchasing')
+        {
+            $item = $this->input->post('item');
+            $description = $this->input->post('description');
+            $unit = $this->input->post('unit');
+            $quantity = $this->input->post('quantity');
+            $po_number = $this->session->userdata('po_number');
 
-        $item = array(
-            'itemName' => $item,
-            'itemDescription' => $description,
-            'unit' => $unit,
-            'quantity' => $quantity,
-            'requestID' => $reqID
-        );
+            $item = array(
+                'itemName' => $item,
+                'itemDescription' => $description,
+                'unit' => $unit,
+                'quantity' => $quantity,
+                'PO_Number' => $po_number
+            );
 
-        $this->request_model->insert_item($item);
-        $data['requestID'] = $this->request_model->get_request_id($reqID);
-        $data['item'] = $this->request_model->display_item();
-        $this->load->view('user/RequisitionForm', $data);
+            $this->request_model->insert_item($item); 
+            $data['item'] = $this->request_model->display_item($po_number);
+            redirect('PurchasingDept');
+        }
+
+        else{
+            $item = $this->input->post('item');
+            $description = $this->input->post('description');
+            $unit = $this->input->post('unit');
+            $quantity = $this->input->post('quantity');
+            $reqID = $this->session->userdata('requestID');
+    
+            
+           
+    
+            $item = array(
+                'itemName' => $item,
+                'itemDescription' => $description,
+                'unit' => $unit,
+                'quantity' => $quantity,
+                'requestID' => $reqID
+            );
+    
+            
+            $this->request_model->insert_item($item);
+            $data['requestID'] = $this->request_model->get_request_id($reqID);
+            $data['item'] = $this->request_model->display_item();
+            $this->load->view('user/RequisitionForm', $data);
+        }
     }
 
     public function edit_item()

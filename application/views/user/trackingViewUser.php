@@ -396,7 +396,6 @@
 
                               <input type="text" name="requestID" value=<?php echo $request->requestID; ?> hidden />
 
-
                               <div class="form-group">
                                 <input class="form-control" name="comment" type="text" placeholder="Your comments" />
                               </div>
@@ -409,7 +408,6 @@
                       </div>
                       </form>
                     </td>
-
 
 
                     <td>

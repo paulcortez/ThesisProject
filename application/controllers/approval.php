@@ -101,6 +101,6 @@ class Approval extends CI_Controller
         $data['requests'] = $this->request_model->displayPurchasing();
         $data['requestItems'] = $this->request_model->display_item();
         $data['comment'] = $this->request_model->displayComment();
-        $this->load->view('dept_views/purchasing_view', $data);
+        $this->load->view('purchase_dept/request', $data);
     }
 }

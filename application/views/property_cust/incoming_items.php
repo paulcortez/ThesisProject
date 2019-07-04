@@ -39,26 +39,14 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <!--Add Row-->
-    <meta charset="windows-1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
-        <!--PRINTING-->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-        <script type="text/javascript">
-          
-           
-        </script>
-
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="../user.html" class="logo">
+            <a href="Dean.html" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini">CPU</span>
                 <!-- logo for regular state and mobile devices -->
@@ -260,28 +248,20 @@
                 </div>
 
                 <!-- sidebar menu: : style can be found in sidebar.less -->
+
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
                     <li class="active treeview">
 
                         <ul class="treeview-menu">
-                            <li class="active"><a href="<?php echo base_url('index.php/page/purchasing')?>"><i class="fa fa-circle-o"></i> Dashboard</a></li> 
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Purchase Order</a>
-                                <div class="dropdown-menu">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/PurchasingDept')?>" class="dropdown-item">Create PO</a></li>
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/PurchasingDept/view_po')?>" class="dropdown-item">List of PO</a></li>
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
-                                    </ul>
-                                </div>
-                            </li>
+                            <li><a href="<?php echo base_url('index.php/page/purchasing') ?>"><i class="fa fa-circle-o"></i> Dashboard</a></li>
+                            <li class="active"><a href="<?php echo base_url('index.php/PurchasingDept/view_po') ?>"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Request</a>
                                 <div class="dropdown-menu">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/UserRequest/new_request')?>" class="dropdown-item">New Request</a></li>
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/approval/displayRequestPurchasing')?>" class="dropdown-item">Requst List</a></li>
+                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/UserRequest/new_request') ?>" class="dropdown-item">New Request</a></li>
+                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/approval/displayRequestPurchasing') ?>" class="dropdown-item">Requst List</a></li>
                                         <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
                                     </ul>
                                 </div>
@@ -310,8 +290,8 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Dashboard
-                    <small>Control panel</small>
+                    <?php echo $this->session->userdata('username'); ?>
+                    <small><?php echo $this->session->userdata('department') ?></small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -322,16 +302,193 @@
             <!-- Main content -->
             <section class="content">
 
-                <!--Requisition Form CSS-->
+                <title>Requisition Form</title>
                 <link rel="stylesheet" href="../bower_components/RequisitionForm/RequisitionFormCSS.css">
                 <!--JQuery-->
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
                 <script src="test.js" type="text/javascript"></script>
+                <script>
+                    var d = new Date();
+                    document.getElementById("demo").innerHTML = d;
+
+                    function myFunction() {
+                        var table = document.getElementById("myTable");
+                        var row = table.insertRow(0);
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        cell1.innerHTML = "adsad";
+                        cell2.innerHTML = "asa";
+                        cell3.innerHTML = "adsad";
+                        cell4.innerHTML = "adsad";
+                    }
+
+                    function myFunction() {
+                        var table = document.getElementById("myTable");
+                        var row = table.insertRow(0);
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        var cell5 = row.insertCell(4);
+                        cell1.innerHTML = "";
+                        cell2.innerHTML = "";
+                        cell3.innerHTML = "";
+                        cell4.innerHTML = "";
+                        cell5.innerHTML = "";
+                    }
+                </script>
+                </head>
+
+                <body>
+
+
+                    <!--Table 2-->
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-lg-4 col-sm-8">
+                                    <h4>PO #</h4>
+                                </th>
+                                <th scope="col" class="col-lg-4 col-sm-8">
+                                    <h4>Order Date</h4>
+                                </th>
+                                <th scope="col" class="col-lg-4 col-sm-8">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($po as $purchOrder) : ?>
+                                <tr>
+                                    <td><?php echo $purchOrder->PO_number; ?></td>
+                                    <td><?php echo $purchOrder->order_date; ?></td>
+                                    <td>
+
+                                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal<?php echo $purchOrder->PO_number; ?>">
+                                            View Details
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <?php echo form_open('PropertyCust/addItem'); ?>
+                                        <div class="modal fade" id="exampleModal<?php echo  $purchOrder->PO_number; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Items</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <table class="table" id="myTable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col" class="col-lg-2 col-sm-8">
+                                                                        <h4>Item name</h4>
+                                                                    </th>
+                                                                    <th scope="col" class="col-lg-5 col-sm-8">
+                                                                        <h4>Description</h4>
+                                                                    </th>
+                                                                    <th scope="col" class="col-lg-2 col-sm-4">
+                                                                        <h4>Unit</h4>
+                                                                    </th>
+                                                                    <th scope="col" class="col-lg-2 col-sm-4">
+                                                                        <h4>Quantity</h4>
+                                                                    </th>
+
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                <?php foreach ($item as $items) :
+                                                                    if ($items->PO_number == $purchOrder->PO_number) {
+                                                                        ?>
+                                                                        <tr>
+                                                                            <td><?php echo $items->itemName; ?></td>
+                                                                            <td><?php echo $items->itemDescription; ?></td>
+                                                                            <td><?php echo $items->unit; ?></td>
+                                                                            <td><?php echo $items->quantity; ?></td>
+                                                                            <td>
+                                                                                <input type="text" value="<?php echo $items->itemID; ?>" name="itemID" id="item" hidden />
+                                                                                <input type="text" value="<?php echo $items->itemName; ?>" name="item" id="item" hidden />
+                                                                                <input type="text" value="<?php echo $items->itemDescription; ?>" name="description" id="description" hidden />
+                                                                                <input type="text" value="<?php echo $items->unit; ?>" name="unit" id="unit" hidden>
+                                                                                <input type="text" value="<?php echo $items->quantity; ?>" name="quantity" id="quantity" hidden>
+                                                                                <input type="text" value="<?php echo $items->department; ?>" name="dept" id="quantity" hidden>
+                                                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1<?php echo $items->itemID; ?>">
+                                                                                    Add to inventory
+                                                                                </button>
+
+                                                                                <!-- Modal -->
+                                                                                <div class="modal fade" id="exampleModal1<?php echo $items->itemID; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
+                                                                                    <div class="modal-dialog" role="document">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <link rel="stylesheet" type="text/css" href="comment.css">
+                                                                                                <div class="titleBox">
+                                                                                                    <label>Comment Section</label>
+                                                                                                </div>
 
 
 
 
-              
+                                                                                                <div class="form-group">
+                                                                                                     
+                                                                                                        <h4>Department</h4>
+                                                                                                        <select class="form-control">
+                                                                                                            <option>inch</option>
+                                                                                                            <option>cm</option>
+                                                                                                            <option>chu2</option>
+                                                                                                        </select>
+                                                                                                  
+                                                                                                </div>
+                                                                                                
+                                                                                                <div class="form-group">
+                                                                                                    <button class="btn btn-default">Add</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                            </td>
+                                        </tr>
+                                    <?php }
+                            endforeach; ?>
+                            </tbody>
+
+            </div>
+            </table>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+        </div>
+        </div>
+        </div>
+        </form>
+        </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+
+    </div>
+    </div>
+    </table>
+
+
+    </section>
+    <!-- /.content -->
+    </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
@@ -532,7 +689,7 @@
     </aside>
     <!-- /.control-sidebar -->
     <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
+             immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
