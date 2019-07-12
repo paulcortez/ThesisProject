@@ -95,6 +95,27 @@
                          } 
                     
              $('#deptArea').html(html);
+									
+						 $.ajax({
+                    url : "<?php echo site_url('PropertyCust/inventoryDetails');?>",
+                    method : "POST",
+                    data : {id: id},
+                    async : true,
+                    dataType : 'json',
+                    success: function(data){
+                        var html = '';
+                        var title = '';
+                        var i;
+                        for(i=0; i<data.length; i++){
+                            html += '<tr><td>'+data[i].quantity+'</td><td>'+data[i].unit+
+                            '</td><td>'+data[i].item_name+
+                            '</td><td>'+data[i].item_description+
+                            '</td><td>'+data[i].control_number+'</td><td>'+data[i].remarks+'</td></tr>'; 
+                        }
+                        $('#inventory').html(html); 
+                    }
+                });		
+									
            }
          });
                  return false;
