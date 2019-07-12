@@ -89,6 +89,7 @@ class Request_model extends CI_Model{
     
     public function purchaseOrder($purchaseOrder){
         $this->db->insert('purchase_order', $purchaseOrder);
+        return $this->db->insert_id();
     }
 
     public function get_po_number($po_number){
@@ -106,6 +107,15 @@ class Request_model extends CI_Model{
         $this->db->where('PO_number', $poNumber);
         $this->db->update('purchase_order', $details);
         return $this->db->affected_rows();
+    }
+
+    public function poDetails($id){ 
+        $this->db->select('supplier.supplierID, supplierName, supplierAddress, phone_no, credit_terms, order_date, PO_number');
+        $this->db->from('purchase_order');
+        $this->db->join('supplier', 'supplier.supplierID = purchase_order.supplier_id');
+        $this->db->where('PO_number',$id);
+        $query = $this->db->get();
+        return $query->row();
     }
 
 

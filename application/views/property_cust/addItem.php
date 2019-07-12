@@ -42,6 +42,34 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
+        
+        <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.3.1.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.js');?>"></script>
+        <script type="text/javascript">
+         $(document).ready(function(){
+ 
+            $('#department').change(function(){ 
+                var id=$(this).val();
+                $.ajax({
+                    url : "<?php echo site_url('PropertyCust/areaName');?>",
+                    method : "POST",
+                    data : {id: id},
+                    async : true,
+                    dataType : 'json',
+                    success: function(data){
+                        var html = '';
+                        var i;
+                        for(i=0; i<data.length; i++){
+                            html += '<option value='+data[i].areaID+'>'+data[i].areaName+'</option>';
+                        }
+                        $('#dept_area').html(html);
+                    }
+                });
+                return false;
+            }); 
+             
+        });
+    </script>
 
   <header class="main-header">
     <!-- Logo -->
@@ -302,21 +330,22 @@
         <div class="row">
             <!--Department and Area-->
         <div class = "col-md-5">
-          <h4>College/Department</h4>
-          <select name="department" class="form-control">
-            <option selected>College of Computer Studies</option>
-            <option value="1">College of Business and Accountancy</option>
-            <option value="2">Department of Highschool</option>
-            <option value="3">Department of Senior</option>
+        <h4>College/Department</h4>
+          <select name="department" id="department" class="form-control">
+           <option value="">Select Department</option>
+              <?php foreach ($departments as $department) : ?>
+                <option value="<?php echo $department->deptID; ?>"><?php echo $department->deptName; ?></option>
+              <?php endforeach; ?>
           </select>
           </div> 
         <div class = col-md-2></div>
+       
         <div class = "col-md-5">
             <h4>Department Area</h4>
-            <select name="dept_area" class="form-control">
-              <option selected>MTCL 1</option>
-              <option value="1">Dean's Office</option>
-            </select> 
+          <select name="dept_area" id="dept_area" class="form-control">
+             <option>Select Area</option>
+
+          </select> 
         </div> <!--/. col-lg-4-->
           </div><!--/. row-->
           

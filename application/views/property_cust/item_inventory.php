@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <!-- Tell the browser to be responsive to screen width -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title> Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
@@ -45,54 +46,108 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
-        <!--PRINTING-->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+
+        <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.3.1.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.js'); ?>"></script>
         <script type="text/javascript">
-            //Address
+        
             $(document).ready(function() {
-                $('#supplier').change(function() {
-                    $.post('PurchasingDept/show_address', {
-                        supplier: $(this).val()
-                    }, function(data) {
-                        $('#address').val(data);
+                $('#department').change(function() {
+                    var id = $(this).val();
+                    $.ajax({
+                        url: "<?php echo site_url('PropertyCust/inventoryDetails'); ?>",
+                        method: "POST",
+                        data: {
+                            id: id
+                        },
+                        async: true,
+                        dataType: 'json',
+                        success: function(data) {
+                            var html = '';
+                            var i;
+                            var counter = 1;
+                            for (i = 0; i < data.length; i++) {
+                                html +=
+                                    '<tr><th>' + counter++
+                                    + '</th><td>' + data[i].quantity +
+                                    '</td><td>' + data[i].unit +
+                                    '</td><td>' + data[i].item_name +
+                                    '</td><td>' + data[i].item_description +
+                                    '</td><td>' + data[i].control_number +
+                                    '</td><td>' + data[i].remarks +
+                                    '</td><td>' + data[i].deptName +
+                                    '</td><td>' + data[i].areaName + '</td></tr>';
+                            }
+                            $('#inventory').html(html);
+                        }
                     });
+                    return false;
                 });
-            });
 
-            //Contact
+            })
+
             $(document).ready(function() {
-                $('#supplier').change(function() {
-                    $.post('PurchasingDept/show_contact', {
-                        supplier: $(this).val()
-                    }, function(data) {
-                        $('#contact').val(data);
+
+                $('#department').change(function() {
+                    var id = $(this).val();
+                    $.ajax({
+                        url: "<?php echo site_url('PropertyCust/areaName'); ?>",
+                        method: "POST",
+                        data: {
+                            id: id
+                        },
+                        async: true,
+                        dataType: 'json',
+                        success: function(data) {
+                            var html = '<option>Select Area</option>';
+                            var i;
+                            for (i = 0; i < data.length; i++) {
+                                html += '<option value=' + data[i].areaID + '>' + data[i].areaName + '</option>';
+                            }
+                            $('#dept_area').html(html);
+                        }
                     });
+                    return false;
                 });
+
             });
 
-            //date
-            $(function() {
-                $('#datepicker').datepicker();
-            });
+            $(document).ready(function() {
 
-            var supplier = $('#supplier').val();
-            $.post('forTest/print', {
-                supplier: supplier
-            });
-
-            /*
-                    $('#supplier').change(function(){
-                        var address = $('#supplier').val();
-                        $.post('forTest/createPurchaseOrder', {supplier:address}, function(data){
-                            $('#address').val(address);
-                        }); 
+                $('#dept_area').change(function() {
+                    var id = $(this).val();
+                    $.ajax({
+                        url: "<?php echo site_url('PropertyCust/deptAreaChoice'); ?>",
+                        method: "POST",
+                        data: {
+                            id: id
+                        },
+                        async: true,
+                        dataType: 'json',
+                        success: function(data) {
+                            var html = '';
+                            var i;
+                            var counter = 1;
+                            for (i = 0; i < data.length; i++) {
+                                html +=
+                                    '<tr><th>' + counter++
+                                    + '</th><td>' + data[i].quantity +
+                                    '</td><td>' + data[i].unit +
+                                    '</td><td>' + data[i].item_name +
+                                    '</td><td>' + data[i].item_description +
+                                    '</td><td>' + data[i].control_number +
+                                    '</td><td>' + data[i].remarks +
+                                    '</td><td>' + data[i].deptName +
+                                    '</td><td>' + data[i].areaName + '</td></tr>';
+                            }
+                            $('#inventory').html(html);
+                        }
                     });
-            });*/
+                    return false;
+                });
+
+            });
         </script>
-
 
         <header class="main-header">
             <!-- Logo -->
@@ -303,35 +358,18 @@
                     <li class="active treeview">
 
                         <ul class="treeview-menu">
-                            <li><a href=""><i class="fa fa-circle-o"></i> Dashboard</a></li>
-                            <li class="active"><a href="RF1.html"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Request</a>
+                            <li class="active"><a href="RF1.html"><i class="fa fa-circle-o"></i> Create Request</a></li>
+                            <li class="nav-item dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i>Update Physical Count</a>
                                 <div class="dropdown-menu">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">New Request</a></li>
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">Requst List</a></li>
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
-                                    </ul>
+                                    <a href="Update_CCS.html" class="dropdown-item">College of Computer Studies</a><br>
+                                    <a href="#" class="dropdown-item">College of Business Accountancy</a><br>
+                                    <a href="#" class="dropdown-item">Department of Highschool</a><br>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Supplier</a>
-                                <div class="dropdown-menu">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">Supplier List</a></li>
-                                        <li class="list-group-item"><a href="#" class="dropdown-item">New Supplier</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li><a href=""><i class="fa fa-circle-o"></i> Approval</a></li>
-                            <li><a href=""><i class="fa fa-circle-o"></i> Transaction History</a></li>
-                            <li><a href=""><i class="fa fa-circle-o"></i> Reports</a></li>
                         </ul>
-                    </li>
-                </ul>
 
-                <!-- /.sidebar -->
+                        <!-- /.sidebar -->
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
@@ -359,87 +397,106 @@
 
 
 
-
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <h1 class="box-title">Purchase Order Form</h1>
-
-                        <!--Date:-->
-                        <!--<h5 id="demo" class="pull-right"></h5><br><br>
-<p class="pull-right">Date</p>
-<script>
-var d = new Date();
-document.getElementById("demo").innerHTML = d.toDateString();
-</script>
-</div>
--->
-                        <!--End of Date-->
-
-
-                        <!--Start of Table -->
-                        <br><br>
-                        <?php echo form_open('PurchasingDept/generatePo');?>
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-lg-6"> 
-                                    <h4>Supplier: </h4>
-                                    <select class="form-control" name="supplier" id="supplier">
-                                        <option selected="disabled">Select Supplier</option>
-                                        <?php foreach ($suppliers as $supplier) : ?>
-                                            <option value="<?php echo $supplier->supplierName; ?>"><?php echo $supplier->supplierName; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <h4>P.O.Number</h4>
-                                    <input type="text" name="po_number" value="<?php echo $id; ?>" class="form-control" placeholder="Purchase Order Number" readonly>
-                                </div>
-
-
-                                <div class="col-lg-12">
-                                    <h4>Address</h4>
-                                    <input type="text" name="address" id="address" class="form-control" placeholder="Address">
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <h4>Tel. #, Fax #:</h4>
-                                    <input type="text" name="contact" id="contact" class="form-control" placeholder="Tel. #, Fax #">
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <h4>Credit Terms: </h4>
-                                    <input type="text" name="credit" class="form-control" placeholder="Credit Terms">
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <h4><label>Order Date</label></h4>
-
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="date" name="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
-                                        </div>
-                                        <!-- /.input group -->
-                                    </div>
-                                    <!-- /.form group -->
-
-                                </div>
-                            </div>
-
-
-                           
-                    <!--End of Container-->
-                       <div class="box-footer">
-                        <button type="submit" class="btn btn-success">Create</button> 
-                        </form>
-
+                        <h1 class="box-title">Physical Count</h1>
                     </div>
-            </section>
-            <!-- /.content -->
+                    <!--Start of Table -->
+
+                    <br><br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-7"></div>
+                            <div class="col-lg-3">
+                                <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                            </div>
+                            <!--/.col-->
+                        </div>
+                        <!--/. row-->
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h4>College/Department</h4>
+                                <select name="department" id="department" class="form-control">
+                                    <option value="">Select Department</option>
+                                    <?php foreach ($departments as $department) : ?>
+                                        <option value="<?php echo $department->deptID; ?>"><?php echo $department->deptName; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <!--/.col-->
+
+                            <div class="col-lg-4">
+                                <h4>Department Area</h4>
+                                <select name="dept_area" id="dept_area" class="form-control">
+                                    <option>Select Area</option>
+
+                                </select>
+                            </div>
+                            <!--/.col-->
+
+                        </div>
+                        <!--/.row-->
+                    </div>
+                    <!--/.container-->
+
+
+                    <br><br>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px">No.</th>
+                                <th style="width: 40px">Qty</th>
+                                <th style="width: 40px">Unit</th>
+                                <th style="width: 40px">Item</th>
+                                <th style="width: 70px">Brand/Description</th>
+                                <th style="width: 55px">Control No.</th>
+                                <th style="width: 40px">Remarks</th>
+                                <th style="width: 70px">Department</th>
+                                <th style="width: 70px">Department Area</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory">
+                            <?php
+                            $counter = 1;
+                            foreach ($inventory as $item) : ?>
+                                <tr>
+                                    <th scope="row"><?php echo $counter ?></th>
+                                    <td><?php echo $item->quantity; ?></td>
+                                    <td><?php echo $item->unit; ?></td>
+                                    <td><?php echo $item->item_name; ?></td>
+                                    <td><?php echo $item->item_description; ?></td>
+                                    <td><?php echo $item->control_number; ?></td>
+                                    <td><?php echo $item->remarks; ?></td>
+                                    <td><?php echo $item->deptName; ?></td>
+                                    <td><?php echo $item->areaName; ?></td>
+
+                                </tr>
+                                <?php $counter++;
+                            endforeach; ?>
+                        </tbody>
+                    </table>
+                    <br><br>
+
+
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-success pull-right">Add</button><br> <br><br><br>
+                    </div>
+
+
+                </div>
+                <!--/. boxbody-->
         </div>
+        <!--/. box default-->
+        </form>
+
+
+        <!-- /.box-body -->
+    </div>
+
+
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">

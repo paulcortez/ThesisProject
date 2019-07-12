@@ -65,6 +65,63 @@ class PurchasingDept extends CI_Controller
         $this->request_model->purchaseOrder($purchaseOrder);
     }
 
+    public function generatePo(){
+        
+        $poNumber = $this->input->post('po_number');
+        $supplier = $this->request_model->get_supplier_id($this->input->post('supplier'));
+        $creditTerms = $this->input->post('credit');
+        $orderDate = $this->input->post('date');
+
+
+        $purchaseOrder = array(
+            'PO_number' => $poNumber,
+            'supplier_id' => $supplier,
+            'order_date' => $orderDate,
+            'credit_terms' => $creditTerms
+        );
+
+        $add = $this->request_model->purchaseOrder($purchaseOrder);
+        $this->session->set_userdata('po_number', $add);
+
+        $data['poNumber'] = $this->request_model->get_po_number($poNumber);
+        $data['supplier'] = $this->request_model->displaySupplier($poNumber);
+        $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
+        $this->load->view('purchase_dept/addItem', $data);
+        //redirect('purchasingDept/viewGeneratedPo');
+    }
+
+    public function viewGeneratedPo(){ 
+        $poNumber = $this->input->post('poNumber');
+        $data['poNumber'] = $poNumber;//$this->request_model->get_po_number($this->session->userdata('po_number'));
+        $this->load->view('purchase_dept/addItem', $data);
+    }
+
+    public function add_item()
+    { 
+            $item = $this->input->post('item');
+            $description = $this->input->post('description');
+            $unit = $this->input->post('unit');
+            $quantity = $this->input->post('quantity');
+            $po_number = $this->input->post('po_num');
+
+            $item = array(
+                'itemName' => $item,
+                'itemDescription' => $description,
+                'unit' => $unit,
+                'quantity' => $quantity,
+                'PO_Number' => $po_number
+            );
+             $this->request_model->insert_item($item);
+            $transID = $this->input->post('reqID');
+            $poNumber = $this->input->post('poNumber');
+            $data['supplier'] = $this->request_model->displaySupplier($poNumber);
+            $data['po_details'] = $this->request_model->displayPurchaseOrder($poNumber);
+            $data['items'] = $this->request_model->displayRequest($transID);
+            
+            $this->load->view('purchase_dept/addItem', $data);
+        
+    }
+
     public function editPurchaseOrder()
     {
         $transID = $this->input->post('reqID');

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title> Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -27,6 +28,8 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap-daterangepicker/daterangepicker.css'); ?>">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap3-wysihtml5.min.css'); ?>">
+
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -43,37 +46,93 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.3.1.js');?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.3.1.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.js');?>"></script>
         <script type="text/javascript">
-         $(document).ready(function(){
- 
+        
+        
+        $(document).ready(function(){
+             $('#department').change(function(){ 
+               var id=$(this).val();
+               $.ajax({
+               url : "<?php echo site_url('PropertyCust/test');?>",
+               method : "POST",
+               data : {id: id},
+               async : true,
+               dataType : 'json',
+                success: function(data){ 
+                var html = '';
+                var i;
+                var j;
+                 for(i=0; i<data.length; i++){
+                 html += '<table>'+
+                          '<thead>'+
+                          '<tr class="clickable" data-toggle="collapse" id="row1" data-target=".row1">'+
+                          '<th colspan="6" class="text-center">'+data[i].areaName+'</th>'+
+                          '</tr>'+
+                          '</thead>'+
+                          '<tr class="collapse row1 collapse in">'+
+                          '<th style="width: 40px">Qty</th>'+
+                          '<th style="width: 40px">Unit</th>'+
+                          '<th style="width: 40px">Item</th>'+
+                          '<th style="width: 70px">Brand/Description</th>'+
+                          '<th style="width: 55px">Control No.</th>'+
+                          '<th style="width: 40px">Remarks</th>'+
+                          '</tr>'+
+                          '</thead>'+
+                       // '<tbody id="inventory">'+
+                          '<tbody>'+
+                          '<tr class="collapse row1 collapse in">'+
+                       /* '<td>'+data[i].quantity+'</td>'+
+                          '<td>'+data[i].unit+'</td>'+
+                          '<td>'+data[i].item_name+'</td>'+
+                          '<td>'+data[i].item_description+'</td>'+
+                          '<td>'+data[i].control_number+'</td>'+
+                          '<td>'+data[i].remarks+'</td>'+*/
+                          '</tr>'+
+                          '</tbody>'+
+                          '</table>';
+                         } 
+                    
+             $('#deptArea').html(html);
+           }
+         });
+                 return false;
+        }); 
+  
+    });
+
+
+    /*
+      $(document).ready(function(){
             $('#department').change(function(){ 
                 var id=$(this).val();
                 $.ajax({
-                    url : "<?php echo site_url('PropertyCust/areaName');?>",
+                    url : "<?php echo site_url('PropertyCust/inventoryDetails');?>",
                     method : "POST",
                     data : {id: id},
                     async : true,
                     dataType : 'json',
                     success: function(data){
                         var html = '';
+                        var title = '';
                         var i;
                         for(i=0; i<data.length; i++){
-                            html += '<option value='+data[i].areaID+'>'+data[i].areaName+'</option>';
+                            html += '<tr><td>'+data[i].quantity+'</td><td>'+data[i].unit+
+                            '</td><td>'+data[i].item_name+
+                            '</td><td>'+data[i].item_description+
+                            '</td><td>'+data[i].control_number+'</td><td>'+data[i].remarks+'</td></tr>'; 
                         }
-                        $('#dept_area').html(html);
- 
+                        $('#inventory').html(html); 
                     }
                 });
                 return false;
             }); 
              
-        });
+        })
+       
+        */
+
     </script>
 
   <header class="main-header">
@@ -322,20 +381,17 @@
 <script src = "test.js" type = "text/javascript"></script>
 
 
-
+ 
   <div class="box box-default">
     <div class="box-header with-border">
-      <h1 class="box-title">College of Computer Studies</h1>
-      </div>
-<!--Start of Table -->
-      
- <br><br>
- <?php echo form_open('propertyCust/addItem');?>
-   <div class="box-body">
-        <div class="row">
+      <h1 class="box-title">Physical Count</h1>
+  </div> <!--/. box-header-->
+  <br><br>
+  <div class = "container">
+  <div class="row">
             <!--Department and Area-->
         <div class = "col-md-5">
-          <h4>College/Department</h4>
+        <h4>College/Department</h4>
           <select name="department" id="department" class="form-control">
            <option value="">Select Department</option>
               <?php foreach ($departments as $department) : ?>
@@ -344,83 +400,32 @@
           </select>
           </div> 
         <div class = col-md-2></div>
-       
-        <div class = "col-md-5">
-            <h4>Department Area</h4>
-          <select name="dept_area" id="dept_area" class="form-control">
-             <option>Select Area</option>
-
-          </select> 
-        </div> <!--/. col-lg-4-->
-          </div><!--/. row-->
-          
-        <div class = "row">
-          <div class = "col-md-4">
-           <h4> Control No.</h4> 
-              <input type="text" name="control_no" class="form-control" description="Control No.">
-          </div>
-          <div class = "col-md-4">
-            <h4>Quantity</h4>
-            <input type="text" name="quantity" class="form-control" description="Quantity">
-          </div>
-            <div class = "col-md-4">
-                <h4>Unit</h4>
-                <input type="text" name="unit" class="form-control" description="Unit">
-              </div>
-        </div> <!--/. row-->
-        
-        <div class = "row">
-            <div class = "col-md-3">
-                <h4>Item</h4>
-                <input type="text" name="item" class="form-control" description="Item">
-              </div>
-              <div class = "col-md-6">
-                  <h4>Description</h4>
-                  <input type="text" name="description" class="form-control" description="Description">
-                </div>
-                <div class = "col-md-3">
-                    <h4>Remarks</h4>
-                    <input type="text" name="remarks" class="form-control" description="Remarks">
-                  </div>
-        </div> <!--/. row-->
-
-          <div class="box-footer">
-              <button type="submit" class="btn btn-success pull-right" >Add</button><br> <br><br><br>
-        </div>
-  
-        
-        <table class="table table-bordered" >
-            <thead>
-              <tr>
-                <th style="width: 30px">No.</th>
-                <th style="width: 40px">Qty</th>
-                <th style="width: 40px">Unit</th>
-                <th style="width: 40px">Item</th>
-                <th style="width: 70px">Brand/Description</th>
-                <th style="width: 55px">Control No.</th>
-                <th style="width: 40px">Remarks</th>
-                <th style="width: 60px">&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-             
-            </tbody>
-          </table>
-          
-         <br><br>
-
-         
-            <div class="box-footer">
-                <button type="button" class="btn btn-success pull-right" >Add</button><br> <br><br><br>
-          </div>
-        </form>  
-          
-        </div> <!--/. boxbody-->
-      </div> <!--/. box default-->
-
       
-      <!-- /.box-body -->
-    </div> 
+  
+
+  <table class="table table-bordered"  id="deptArea">
+  <!--  <br><br>
+      <thead >
+        <tr class="clickable" data-toggle="collapse" id="row1" data-target=".row1">
+          <th colspan="6" class="text-center"></th>
+        </tr>
+      </thead>
+       <thead>
+         <tr class="collapse row1 collapse in">
+           <th style="width: 40px">Qty</th>
+           <th style="width: 40px">Unit</th>
+           <th style="width: 40px">Item</th>
+           <th style="width: 70px">Brand/Description</th>
+           <th style="width: 55px">Control No.</th>
+           <th style="width: 40px">Remarks</th>
+         </tr>
+       </thead>
+       <tbody id="inventory">
+         <tr class="collapse row1 collapse in"> 
+         </tr>
+       </tbody> -->
+     </table>
+   
 
   
     </section>
@@ -631,8 +636,8 @@
 </div>
 <!-- ./wrapper -->
 
-  <!-- jQuery 3 -->
-    <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
+<!-- jQuery 3 -->
+<script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="<?php echo base_url('assets/js/jquery-ui.min.js'); ?>"></script>\
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

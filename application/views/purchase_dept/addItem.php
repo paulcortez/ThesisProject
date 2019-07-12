@@ -39,14 +39,62 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
+    <!--Add Row-->
+    <meta charset="windows-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
+        <!--PRINTING-->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+        <script type="text/javascript">
+            //Address
+            $(document).ready(function() {
+                $('#supplier').change(function() {
+                    $.post('forTest/test_one', {
+                        supplier: $(this).val()
+                    }, function(data) {
+                        $('#address').val(data);
+                    });
+                });
+            });
+
+            //Contact
+            $(document).ready(function() {
+                $('#supplier').change(function() {
+                    $.post('forTest/test_two', {
+                        supplier: $(this).val()
+                    }, function(data) {
+                        $('#contact').val(data);
+                    });
+                });
+            });
+
+            //date
+            $(function() {
+                $('#datepicker').datepicker();
+            });
+
+            var supplier = $('#supplier').val();
+            $.post('forTest/print', {supplier: supplier});
+
+            /*
+                    $('#supplier').change(function(){
+                        var address = $('#supplier').val();
+                        $.post('forTest/createPurchaseOrder', {supplier:address}, function(data){
+                            $('#address').val(address);
+                        }); 
+                    });
+            });*/
+        </script>
+
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="Dean.html" class="logo">
+            <a href="../user.html" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini">CPU</span>
                 <!-- logo for regular state and mobile devices -->
@@ -248,20 +296,19 @@
                 </div>
 
                 <!-- sidebar menu: : style can be found in sidebar.less -->
-
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
                     <li class="active treeview">
 
                         <ul class="treeview-menu">
-                            <li><a href="<?php echo base_url('index.php/page/purchasing') ?>"><i class="fa fa-circle-o"></i> Dashboard</a></li>
-                            <li class="active"><a href="<?php echo base_url('index.php/PurchasingDept/view_po') ?>"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
+                            <li><a href=""><i class="fa fa-circle-o"></i> Dashboard</a></li>
+                            <li class="active"><a href="RF1.html"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-circle-o"></i> Request</a>
                                 <div class="dropdown-menu">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/UserRequest/new_request') ?>" class="dropdown-item">New Request</a></li>
-                                        <li class="list-group-item"><a href="<?php echo base_url('index.php/approval/displayRequestPurchasing') ?>" class="dropdown-item">Requst List</a></li>
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">New Request</a></li>
+                                        <li class="list-group-item"><a href="#" class="dropdown-item">Requst List</a></li>
                                         <li class="list-group-item"><a href="#" class="dropdown-item">Archive</a></li>
                                     </ul>
                                 </div>
@@ -290,8 +337,8 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    <?php echo $this->session->userdata('username'); ?>
-                    <small><?php echo $this->session->userdata('department') ?></small>
+                    Dashboard
+                    <small>Control panel</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -302,92 +349,98 @@
             <!-- Main content -->
             <section class="content">
 
-                <title>Requisition Form</title>
+                <!--Requisition Form CSS-->
                 <link rel="stylesheet" href="../bower_components/RequisitionForm/RequisitionFormCSS.css">
                 <!--JQuery-->
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
                 <script src="test.js" type="text/javascript"></script>
-                <script>
-                    var d = new Date();
-                    document.getElementById("demo").innerHTML = d;
-
-                    function myFunction() {
-                        var table = document.getElementById("myTable");
-                        var row = table.insertRow(0);
-                        var cell1 = row.insertCell(0);
-                        var cell2 = row.insertCell(1);
-                        var cell3 = row.insertCell(2);
-                        var cell4 = row.insertCell(3);
-                        cell1.innerHTML = "adsad";
-                        cell2.innerHTML = "asa";
-                        cell3.innerHTML = "adsad";
-                        cell4.innerHTML = "adsad";
-                    }
-
-                    function myFunction() {
-                        var table = document.getElementById("myTable");
-                        var row = table.insertRow(0);
-                        var cell1 = row.insertCell(0);
-                        var cell2 = row.insertCell(1);
-                        var cell3 = row.insertCell(2);
-                        var cell4 = row.insertCell(3);
-                        var cell5 = row.insertCell(4);
-                        cell1.innerHTML = "";
-                        cell2.innerHTML = "";
-                        cell3.innerHTML = "";
-                        cell4.innerHTML = "";
-                        cell5.innerHTML = "";
-                    }
-                </script>
-                </head>
-
-                <body>
 
 
-                    <!--Table 2-->
 
-                    <table class="table">
-                        <thead>
+
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h1 class="box-title">Purchase Order Form</h1>
+
+                        <!--Date:-->
+                        <!--<h5 id="demo" class="pull-right"></h5><br><br>
+<p class="pull-right">Date</p>
+<script>
+var d = new Date();
+document.getElementById("demo").innerHTML = d.toDateString();
+</script>
+</div>
+-->
+                        <!--End of Date-->
+
+
+                        <!--Start of Table -->
+                    
+                            <form name="addItem" method="post" action="<?php echo site_url('PurchasingDept/add_item') ?>">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-8">
+                                        <h4>Item </h4>
+                                        <input type="text" class="form-control" placeholder="Item" name="item" id="item">
+                                    </div>
+                                    <div class="col-lg-4 col-sm-8">
+                                        <h4>Description</h4>
+                                        <input type="text" class="form-control" placeholder="Description" name="description" id="description">
+                                    </div>
+
+                                    <div class="col-lg-2 col-sm-4">
+                                        <h4>Unit</h4>
+                                        <input type="text" class="form-control" placeholder="Unit" name="unit" id="unit">
+                                    </div>
+
+
+                                    <div class="col-lg-2 col-sm-4">
+                                        <h4>Quantity</h4>
+                                        <input type="text" class="form-control" placeholder="Quantity" name="quantity" id="quantity">
+                                    </div>
+
+                                </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <input type="text"  name="po_num" value="<?php echo $poNumber;?>">
+                            <button type="submit" class="btn btn-success pull-right">Add</button><br> <br><br><br>
+                        </div>
+                     </form>
+
+                        <!--Table Details-->
+
+                        <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="col-lg-2 col-sm-8">
-                                        <h4>Item name</h4>
+                                    <th>
+                                        <h4>Item</h4>
                                     </th>
-                                    <th scope="col" class="col-lg-5 col-sm-8">
+                                    <th>
                                         <h4>Description</h4>
                                     </th>
-                                    <th scope="col" class="col-lg-2 col-sm-4">
+                                    <th>
                                         <h4>Unit</h4>
                                     </th>
-                                    <th scope="col" class="col-lg-2 col-sm-4">
+                                    <th>
                                         <h4>Quantity</h4>
                                     </th>
-                                    <th scope="col" class="col-lg-2 col-sm-4">
-                                        <h4>Department</h4>
-                                    </th>
-
                                 </tr>
                             </thead>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($inventory as $item) : ?>
-                                <tr>
-                                    <td><?php echo $item->item_name; ?></td>
-                                    <td><?php echo $item->item_description; ?></td>
-                                    <td><?php echo $item->unit; ?></td>
-                                    <td><?php echo $item->quantity; ?></td>
-                                    <td><?php echo $item->department; ?></td>
+                            <tbody>
+                                
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
+                            </tbody>
+                        </table>
 
+                    </div>
+
+                            <!--Table Details-->
+
+                          
+                        </div>
+            </section>
+            <!-- /.content -->
         </div>
-    </div>
-    </table>
-
-
-    </section>
-    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
@@ -589,7 +642,7 @@
     </aside>
     <!-- /.control-sidebar -->
     <!-- Add the sidebar's background. This div must be placed
-             immediately after the control sidebar -->
+       immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
